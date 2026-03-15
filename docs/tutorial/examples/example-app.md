@@ -1,0 +1,220 @@
+---
+
+title: Example Application - DjangoAPI Guard Demo
+description: Learn how to use DjangoAPI Guard with a complete example application
+keywords: djangoapi-guard example, example application, security middleware demo, docker compose
+---
+
+Example Application
+===================
+
+DjangoAPI Guard comes with a fully functional example application that demonstrates its key security features. This example serves both as a reference implementation and a testing ground for your security settings.
+
+___
+
+Features Demonstrated
+---------------------
+
+The example app demonstrates:
+
+- IP whitelist/blacklist filtering
+- Rate limiting
+- Penetration detection and prevention
+- Auto-banning of suspicious IPs
+- Geolocation-based filtering
+- User agent filtering
+- Redis integration
+
+___
+
+Code Overview
+-------------
+
+The example app is built using Django and shows how to integrate DjangoAPI Guard as middleware:
+
+[Example Code](https://github.com/rennf93/djangoapi-guard/blob/master/examples/main.py)
+
+```python
+# settings.py
+from djangoapi_guard.models import SecurityConfig
+
+# Configure DjangoAPI Guard
+GUARD_SECURITY_CONFIG = SecurityConfig(
+    # Whitelist/Blacklist
+    whitelist=["0.0.0.0/32", "0.0.0.0"],
+    blacklist=["192.168.1.100/32", "192.168.1.100"],
+    ...
+)
+
+MIDDLEWARE = [
+    "djangoapi_guard.middleware.DjangoAPIGuard",
+    # ...
+]
+```
+
+___
+
+Running the Example App
+------------------------
+
+Using Docker Compose (Recommended)
+-----------------------------------
+
+The easiest way to run the example is with Docker Compose, which automatically sets up Redis:
+
+```bash
+# Clone the repository
+git clone https://github.com/rennf93/djangoapi-guard.git
+cd djangoapi-guard/examples
+
+# Start the app with Redis
+docker compose up
+```
+
+The Docker Compose file does the following:
+- Builds the DjangoAPI Guard example app
+- Runs Redis with persistent data volume
+- Connects the application to Redis
+- Exposes the app on port 8000
+
+___
+
+Docker Compose File
+-------------------
+
+[Docker Compose File](https://github.com/rennf93/djangoapi-guard/blob/master/examples/compose.yml)
+
+```yaml
+services:
+  djangoapi-guard-example:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: gunicorn myproject.wsgi:application --bind 0.0.0.0:8000 --reload
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - REDIS_PREFIX=${REDIS_PREFIX:-"djangoapi_guard:"}
+      - IPINFO_TOKEN=${IPINFO_TOKEN:-"test_token"}
+    depends_on:
+      redis:
+        condition: service_started
+  ...
+```
+
+___
+
+Test Endpoints
+--------------
+
+Once running, you can access the following endpoints:
+
+- **`/`**: Basic endpoint to test connection and rate limiting
+- **`/ip`**: Returns your client IP address as seen by the server
+- **`/test?input=<script>alert(1)</script>`**: Test with various inputs to trigger penetration detection
+
+___
+
+Testing Security Features
+--------------------------
+
+You can use the included test battery to verify security features:
+
+[Test battery](https://github.com/rennf93/djangoapi-guard/blob/master/examples/test_battery.txt)
+
+```bash
+# For rate limiting (will trigger after 15 requests)
+for i in {1..20}; do curl http://0.0.0.0:8000/; echo " Request $i"; sleep 0.2; done
+
+# For XSS detection
+curl "http://0.0.0.0:8000/test?input=<script>alert(1)</script>"
+
+# For SQL injection detection
+curl "http://0.0.0.0:8000/test?query=SELECT%20*%20FROM%20users"
+
+# For path traversal detection
+curl "http://0.0.0.0:8000/test?path=../../../etc/passwd"
+
+# For command injection detection
+curl "http://0.0.0.0:8000/test?cmd=;ls;pwd;"
+
+...
+```
+
+___
+
+Environment Variables
+---------------------
+
+The example app supports the following environment variables:
+
+- `IPINFO_TOKEN`: Your IPInfo API token (default: test_token)
+- `REDIS_URL`: Redis connection URL (default: redis://redis:6379)
+- `REDIS_PREFIX`: Prefix for Redis keys (default: djangoapi_guard:)
+
+___
+
+Source Code
+-----------
+
+You can find the complete example code in the [examples directory](https://github.com/rennf93/djangoapi-guard/tree/master/examples) of the GitHub repository.
+
+___
+
+Example with Passive Mode
+--------------------------
+
+For production deployments where you want to assess potential false positives before fully enabling penetration detection, use the passive mode:
+
+```python
+# settings.py
+from djangoapi_guard import SecurityConfig, IPInfoManager
+
+GUARD_SECURITY_CONFIG = SecurityConfig(
+    geo_ip_handler=IPInfoManager("your_ipinfo_token_here"),
+
+    # Rate limiting
+    rate_limit=100,  # Allow 100 requests
+    rate_limit_window=60,  # per minute
+
+    # IP filtering
+    whitelist=["127.0.0.1", "192.168.1.0/24"],  # Office network
+
+    # Geolocation
+    blocked_countries=["XX", "YY"],  # Block specific countries
+
+    # Logging configuration
+    log_request_level="INFO",       # Log normal requests as INFO (for development)
+    # log_request_level=None,       # Or disable for production
+    log_suspicious_level="WARNING", # Keep suspicious activity at WARNING level
+
+    # Penetration detection with passive mode
+    enable_penetration_detection=True,
+    passive_mode=True,  # Don't block, just log
+
+    # Auto-banning (will only be logged in passive mode)
+    enable_ip_banning=True,
+    auto_ban_threshold=5,  # Number of suspicious requests before ban
+    auto_ban_duration=3600,  # Ban duration in seconds (1 hour)
+
+    # Redis for distributed deployment (optional)
+    enable_redis=True,
+    redis_url="redis://localhost:6379",
+)
+
+MIDDLEWARE = [
+    "djangoapi_guard.middleware.DjangoAPIGuard",
+    # ...
+]
+```
+
+```python
+# views.py
+from django.http import JsonResponse
+
+def read_root(request):
+    return JsonResponse({"Hello": "World"})
+```
+
+You can use any configuration with this mode, but it restricts penetration detection to passive mode. After running in this mode for some time and analyzing logs, you can switch to full protection mode by removing the `passive_mode=True` flag or setting it to `False` (false by default).
