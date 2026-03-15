@@ -15,12 +15,12 @@ We take the security of DjangoAPI Guard seriously. If you believe you've found a
 
 1. **Do not disclose the vulnerability publicly** until it has been addressed by the maintainers.
 2. **Report the vulnerability through GitHub's security advisory feature**:
-   - Go to the [Security tab](https://github.com/rennf93/djangoapi-guard/security/advisories) of the DjangoAPI Guard repository
+   - Go to the [Security tab](https://github.com/rennf93/djapi-guard/security/advisories) of the DjangoAPI Guard repository
    - Click on "New draft security advisory"
    - Fill in the details of the vulnerability
    - Submit the advisory
 
-   Alternatively, you can report vulnerabilities through [GitHub's private vulnerability reporting feature](https://github.com/rennf93/djangoapi-guard/security/advisories/new).
+   Alternatively, you can report vulnerabilities through [GitHub's private vulnerability reporting feature](https://github.com/rennf93/djapi-guard/security/advisories/new).
 
 3. Include the following information in your report:
    - A description of the vulnerability and its potential impact
@@ -82,7 +82,7 @@ DjangoAPI Guard provides several security features to protect your Django applic
 - Country-based Access Control
 - Cloud Provider IP Blocking
 
-For detailed information on configuring these features, refer to the [documentation](https://rennf93.github.io/djangoapi-guard).
+For detailed information on configuring these features, refer to the [documentation](https://rennf93.github.io/djapi-guard).
 
 ## Threat Model
 

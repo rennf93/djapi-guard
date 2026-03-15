@@ -1,10 +1,10 @@
 services:
-    djangoapi-guard-example:
+    djapi-guard-example:
       build:
         context: .
         args:
           PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
-      image: djangoapi-guard-example-py${PYTHON_VERSION:-3.10}
+      image: djapi-guard-example-py${PYTHON_VERSION:-3.10}
       command: gunicorn examples.simple.example_project.wsgi:application --bind 0.0.0.0:8000 --reload
       ports:
         - "8000:8000"
@@ -20,12 +20,12 @@ services:
         redis:
           condition: service_started
 
-    djangoapi-guard:
+    djapi-guard:
       build:
         context: .
         args:
           PYTHON_VERSION: ${PYTHON_VERSION:-3.10}
-      image: djangoapi-guard-py${PYTHON_VERSION:-3.10}
+      image: djapi-guard-py${PYTHON_VERSION:-3.10}
       command: pytest -v --cov=.
       environment:
         - REDIS_URL=redis://redis:6379

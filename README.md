@@ -1,49 +1,49 @@
 <p align="center">
-    <a href="https://rennf93.github.io/djangoapi-guard/latest/">
-        <img src="https://rennf93.github.io/djangoapi-guard/latest/assets/logo.svg" alt="DjangoAPI Guard">
+    <a href="https://rennf93.github.io/djapi-guard/latest/">
+        <img src="https://rennf93.github.io/djapi-guard/latest/assets/logo.svg" alt="DjangoAPI Guard">
     </a>
 </p>
 
 ---
 
 <p align="center">
-    <strong>djangoapi-guard is a security library for Django that provides middleware to control IPs, log requests, detect penetration attempts and more. It integrates seamlessly with Django to offer robust protection against various security threats.</strong>
+    <strong>djapi-guard is a security library for Django that provides middleware to control IPs, log requests, detect penetration attempts and more. It integrates seamlessly with Django to offer robust protection against various security threats.</strong>
 </p>
 
 <p align="center">
-    <a href="https://badge.fury.io/py/djangoapi-guard">
-        <img src="https://badge.fury.io/py/djangoapi-guard.svg?cache=none&icon=si%3Apython&icon_color=%23008cb4" alt="PyPiVersion">
+    <a href="https://badge.fury.io/py/djapi-guard">
+        <img src="https://badge.fury.io/py/djapi-guard.svg?cache=none&icon=si%3Apython&icon_color=%23008cb4" alt="PyPiVersion">
     </a>
-    <a href="https://github.com/rennf93/djangoapi-guard/actions/workflows/release.yml">
-        <img src="https://github.com/rennf93/djangoapi-guard/actions/workflows/release.yml/badge.svg" alt="Release">
+    <a href="https://github.com/rennf93/djapi-guard/actions/workflows/release.yml">
+        <img src="https://github.com/rennf93/djapi-guard/actions/workflows/release.yml/badge.svg" alt="Release">
     </a>
     <a href="https://opensource.org/licenses/MIT">
         <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License">
     </a>
-    <a href="https://github.com/rennf93/djangoapi-guard/actions/workflows/ci.yml">
-        <img src="https://github.com/rennf93/djangoapi-guard/actions/workflows/ci.yml/badge.svg" alt="CI">
+    <a href="https://github.com/rennf93/djapi-guard/actions/workflows/ci.yml">
+        <img src="https://github.com/rennf93/djapi-guard/actions/workflows/ci.yml/badge.svg" alt="CI">
     </a>
-    <a href="https://github.com/rennf93/djangoapi-guard/actions/workflows/code-ql.yml">
-        <img src="https://github.com/rennf93/djangoapi-guard/actions/workflows/code-ql.yml/badge.svg" alt="CodeQL">
+    <a href="https://github.com/rennf93/djapi-guard/actions/workflows/code-ql.yml">
+        <img src="https://github.com/rennf93/djapi-guard/actions/workflows/code-ql.yml/badge.svg" alt="CodeQL">
     </a>
 </p>
 
 <p align="center">
-    <a href="https://github.com/rennf93/djangoapi-guard/actions/workflows/pages/pages-build-deployment">
-        <img src="https://github.com/rennf93/djangoapi-guard/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages" alt="PagesBuildDeployment">
+    <a href="https://github.com/rennf93/djapi-guard/actions/workflows/pages/pages-build-deployment">
+        <img src="https://github.com/rennf93/djapi-guard/actions/workflows/pages/pages-build-deployment/badge.svg?branch=gh-pages" alt="PagesBuildDeployment">
     </a>
-    <a href="https://github.com/rennf93/djangoapi-guard/actions/workflows/docs.yml">
-        <img src="https://github.com/rennf93/djangoapi-guard/actions/workflows/docs.yml/badge.svg" alt="DocsUpdate">
+    <a href="https://github.com/rennf93/djapi-guard/actions/workflows/docs.yml">
+        <img src="https://github.com/rennf93/djapi-guard/actions/workflows/docs.yml/badge.svg" alt="DocsUpdate">
     </a>
-    <img src="https://img.shields.io/github/last-commit/rennf93/djangoapi-guard?style=flat&amp;logo=git&amp;logoColor=white&amp;color=0080ff" alt="last-commit">
+    <img src="https://img.shields.io/github/last-commit/rennf93/djapi-guard?style=flat&amp;logo=git&amp;logoColor=white&amp;color=0080ff" alt="last-commit">
 </p>
 
 <p align="center">
     <img src="https://img.shields.io/badge/Python-3776AB.svg?style=flat&amp;logo=Python&amp;logoColor=white" alt="Python">
     <img src="https://img.shields.io/badge/Django-092E20.svg?style=flat&amp;logo=Django&amp;logoColor=white" alt="Django">
     <img src="https://img.shields.io/badge/Redis-FF4438.svg?style=flat&amp;logo=Redis&amp;logoColor=white" alt="Redis">
-    <a href="https://pepy.tech/project/djangoapi-guard">
-        <img src="https://pepy.tech/badge/djangoapi-guard" alt="Downloads">
+    <a href="https://pepy.tech/project/djapi-guard">
+        <img src="https://pepy.tech/badge/djapi-guard" alt="Downloads">
     </a>
 </p>
 
@@ -51,7 +51,7 @@
 
 # Documentation
 
-**[Documentation](https://rennf93.github.io/djangoapi-guard)** - Full technical documentation and deep dive into its inner workings.
+**[Documentation](https://rennf93.github.io/djapi-guard)** - Full technical documentation and deep dive into its inner workings.
 
 ___
 
@@ -78,10 +78,10 @@ ___
 
 ## Installation
 
-To install `djangoapi-guard`, use pip:
+To install `djapi-guard`, use pip:
 
 ```bash
-pip install djangoapi-guard
+pip install djapi-guard
 ```
 
 ___
@@ -90,7 +90,7 @@ ___
 
 ## Basic Setup
 
-To use `djangoapi-guard`, you need to add the middleware to your Django project and configure the security settings. Here's a basic example:
+To use `djapi-guard`, you need to add the middleware to your Django project and configure the security settings. Here's a basic example:
 
 **settings.py**
 
@@ -304,7 +304,7 @@ GUARD_SECURITY_CONFIG = {
 
 ## IP Geolocation and Country Blocking
 
-If you want to use `djangoapi-guard`'s built-in country filtering features, you'll need to obtain an IPInfo token:
+If you want to use `djapi-guard`'s built-in country filtering features, you'll need to obtain an IPInfo token:
 
 1. Visit [IPInfo's website](https://ipinfo.io/signup) to create a free account
 2. After signing up, you'll receive an API token

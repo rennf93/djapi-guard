@@ -1,11 +1,11 @@
 [project]
-name = "djangoapi-guard-advanced-example"
+name = "djapi-guard-advanced-example"
 version = "1.0.0"
 description = "Production-ready DjangoAPI Guard example with nginx, gunicorn, and modular layout"
 requires-python = ">=3.10"
 dependencies = [
     "django",
-    "djangoapi-guard",
+    "djapi-guard",
     "gunicorn",
     "redis",
 ]

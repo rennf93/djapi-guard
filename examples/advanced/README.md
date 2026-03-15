@@ -1,6 +1,6 @@
 # DjangoAPI Guard Advanced Example
 
-Production-ready deployment demonstrating djangoapi-guard with nginx reverse proxy, gunicorn process management, and modular project layout.
+Production-ready deployment demonstrating djapi-guard with nginx reverse proxy, gunicorn process management, and modular project layout.
 
 ## Architecture
 
@@ -12,7 +12,7 @@ Client -> nginx (port 80) -> gunicorn (port 8000) -> Django + guard middleware
 
 - **nginx**: Reverse proxy with rate limiting and IP forwarding headers
 - **gunicorn**: Process manager with gthread workers for concurrent requests
-- **djangoapi-guard**: Application-level security middleware (IP filtering, penetration detection, behavioral analysis)
+- **djapi-guard**: Application-level security middleware (IP filtering, penetration detection, behavioral analysis)
 - **Redis**: Distributed cache for rate limiting and IP ban state
 
 ## Quick Start

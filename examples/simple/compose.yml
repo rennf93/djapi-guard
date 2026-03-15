@@ -1,5 +1,5 @@
 services:
-  djangoapi-guard-simple:
+  djapi-guard-simple:
     build:
       context: .
       dockerfile: ./Dockerfile

@@ -1,6 +1,6 @@
 """Django settings for tests."""
 
-SECRET_KEY = "test-secret-key-for-djangoapi-guard"
+SECRET_KEY = "test-secret-key-for-djapi-guard"
 
 ALLOWED_HOSTS = ["*"]
 

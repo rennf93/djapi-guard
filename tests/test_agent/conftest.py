@@ -1,4 +1,4 @@
-"""Test configuration for djangoapi-guard-agent integration tests."""
+"""Test configuration for djapi-guard-agent integration tests."""
 
 from collections.abc import Generator
 from typing import Any

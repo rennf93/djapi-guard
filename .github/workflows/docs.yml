@@ -39,10 +39,10 @@ jobs:
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Docs Update'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':books:'
       #     TITLE: 'Docs Update Started'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *DOCS UPDATE TRIGGERED!*
@@ -147,10 +147,10 @@ jobs:
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Docs Update'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Docs Update Successful'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *Docs v${{ env.VERSION }} Update Successful!*
@@ -173,10 +173,10 @@ jobs:
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Docs Update'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Docs Update Failed'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *Docs v${{ env.VERSION }} Update Failed!*

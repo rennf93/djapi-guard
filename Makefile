@@ -30,14 +30,14 @@ upgrade:
 # Start example-app
 .PHONY: start-example
 start-example:
-	@COMPOSE_BAKE=true PYTHON_VERSION=$(DEFAULT_PYTHON) docker compose up --build djangoapi-guard-example
+	@COMPOSE_BAKE=true PYTHON_VERSION=$(DEFAULT_PYTHON) docker compose up --build djapi-guard-example
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
 .PHONY: run-example
 run-example:
-	@COMPOSE_BAKE=true docker compose build djangoapi-guard-example
-	@docker compose up djangoapi-guard-example
+	@COMPOSE_BAKE=true docker compose build djapi-guard-example
+	@docker compose up djapi-guard-example
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
@@ -54,7 +54,7 @@ restart: stop start-example
 # Lint code
 .PHONY: lint
 lint:
-	@COMPOSE_BAKE=true docker compose run --rm --no-deps djangoapi-guard sh -c "echo 'Formatting w/ Ruff...' ; echo '' ; ruff format . ; echo '' ; echo '' ; echo 'Linting w/ Ruff...' ; echo '' ; ruff check . ; echo '' ; echo '' ; echo 'Type checking w/ Mypy...' ; echo '' ; mypy . ; echo '' ; echo '' ; echo 'Finding dead code w/ Vulture...' ; echo '' ; vulture"
+	@COMPOSE_BAKE=true docker compose run --rm --no-deps djapi-guard sh -c "echo 'Formatting w/ Ruff...' ; echo '' ; ruff format . ; echo '' ; echo '' ; echo 'Linting w/ Ruff...' ; echo '' ; ruff check . ; echo '' ; echo '' ; echo 'Type checking w/ Mypy...' ; echo '' ; mypy . ; echo '' ; echo '' ; echo 'Finding dead code w/ Vulture...' ; echo '' ; vulture"
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
@@ -159,7 +159,7 @@ check-all: lint security quality analysis
 # Run tests (default Python version)
 .PHONY: test
 test:
-	@COMPOSE_BAKE=true PYTHON_VERSION=$(DEFAULT_PYTHON) docker compose run --rm --build djangoapi-guard pytest -v --cov=.
+	@COMPOSE_BAKE=true PYTHON_VERSION=$(DEFAULT_PYTHON) docker compose run --rm --build djapi-guard pytest -v --cov=.
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
@@ -170,36 +170,36 @@ test-all: test-3.10 test-3.11 test-3.12 test-3.13
 # Python 3.10
 .PHONY: test-3.10
 test-3.10:
-	@docker compose down -v djangoapi-guard
-	@COMPOSE_BAKE=true PYTHON_VERSION=3.10 docker compose build djangoapi-guard
-	@PYTHON_VERSION=3.10 docker compose run --rm djangoapi-guard pytest -v --cov=.
+	@docker compose down -v djapi-guard
+	@COMPOSE_BAKE=true PYTHON_VERSION=3.10 docker compose build djapi-guard
+	@PYTHON_VERSION=3.10 docker compose run --rm djapi-guard pytest -v --cov=.
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
 # Python 3.11
 .PHONY: test-3.11
 test-3.11:
-	@docker compose down -v djangoapi-guard
-	@COMPOSE_BAKE=true PYTHON_VERSION=3.11 docker compose build djangoapi-guard
-	@PYTHON_VERSION=3.11 docker compose run --rm djangoapi-guard pytest -v --cov=.
+	@docker compose down -v djapi-guard
+	@COMPOSE_BAKE=true PYTHON_VERSION=3.11 docker compose build djapi-guard
+	@PYTHON_VERSION=3.11 docker compose run --rm djapi-guard pytest -v --cov=.
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
 # Python 3.12
 .PHONY: test-3.12
 test-3.12:
-	@docker compose down -v djangoapi-guard
-	@COMPOSE_BAKE=true PYTHON_VERSION=3.12 docker compose build djangoapi-guard
-	@PYTHON_VERSION=3.12 docker compose run --rm djangoapi-guard pytest -v --cov=.
+	@docker compose down -v djapi-guard
+	@COMPOSE_BAKE=true PYTHON_VERSION=3.12 docker compose build djapi-guard
+	@PYTHON_VERSION=3.12 docker compose run --rm djapi-guard pytest -v --cov=.
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 
 # Python 3.13
 .PHONY: test-3.13
 test-3.13:
-	@docker compose down -v djangoapi-guard
-	@COMPOSE_BAKE=true PYTHON_VERSION=3.13 docker compose build djangoapi-guard
-	@PYTHON_VERSION=3.13 docker compose run --rm djangoapi-guard pytest -v --cov=.
+	@docker compose down -v djapi-guard
+	@COMPOSE_BAKE=true PYTHON_VERSION=3.13 docker compose build djapi-guard
+	@PYTHON_VERSION=3.13 docker compose run --rm djapi-guard pytest -v --cov=.
 	@docker compose down --rmi all --remove-orphans -v
 	@docker system prune -f
 

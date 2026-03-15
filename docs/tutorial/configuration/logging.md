@@ -163,7 +163,7 @@ from djangoapi_guard import SecurityConfig
 
 GUARD_SECURITY_CONFIG = SecurityConfig(
     # File + console logging for audit trail
-    custom_log_file="/var/log/djangoapi-guard/security.log",
+    custom_log_file="/var/log/djapi-guard/security.log",
 
     # Disable normal request logging to reduce noise
     log_request_level=None,

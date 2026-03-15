@@ -1,7 +1,7 @@
 DjangoAPI Guard Simple Example
 ==============================
 
-Single-project Django application demonstrating all djangoapi-guard security features.
+Single-project Django application demonstrating all djapi-guard security features.
 
 ___
 

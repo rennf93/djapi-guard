@@ -75,10 +75,10 @@ jobs:
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - CI & Tests - Py${{ matrix.python-version }}'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':test_tube:'
       #     TITLE: 'CI & Tests Started - Py${{ matrix.python-version }}'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *CI & TESTS TRIGGERED!*
@@ -120,10 +120,10 @@ jobs:
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - CI & Tests - Py${{ matrix.python-version }}'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'CI & Tests Successful - Py${{ matrix.python-version }}'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       Matrix:
@@ -150,10 +150,10 @@ jobs:
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - CI & Tests - Py${{ matrix.python-version }}'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'CI & Tests Failed - Py${{ matrix.python-version }}'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       Matrix:

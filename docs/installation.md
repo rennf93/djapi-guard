@@ -8,10 +8,10 @@ keywords: djangoapi guard installation, python security middleware, django secur
 Installation
 ============
 
-Install `djangoapi-guard` using pip:
+Install `djapi-guard` using pip:
 
 ```bash
-pip install djangoapi-guard
+pip install djapi-guard
 ```
 
 **Note**: Ensure you have Python 3.10 or higher installed.
@@ -21,7 +21,7 @@ ___
 Prerequisites
 -------------
 
-Before using `djangoapi-guard`'s country filtering features, obtain an IPInfo token:
+Before using `djapi-guard`'s country filtering features, obtain an IPInfo token:
 
 1. Visit [IPInfo's website](https://ipinfo.io/signup) to create a free account.
 2. After signing up, you'll receive an API token.

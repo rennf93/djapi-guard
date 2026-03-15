@@ -2,7 +2,7 @@
 
 title: Example Application - DjangoAPI Guard Demo
 description: Learn how to use DjangoAPI Guard with a complete example application
-keywords: djangoapi-guard example, example application, security middleware demo, docker compose
+keywords: djapi-guard example, example application, security middleware demo, docker compose
 ---
 
 Example Application
@@ -32,7 +32,7 @@ Code Overview
 
 The example app is built using Django and shows how to integrate DjangoAPI Guard as middleware:
 
-[Example Code](https://github.com/rennf93/djangoapi-guard/blob/master/examples/main.py)
+[Example Code](https://github.com/rennf93/djapi-guard/blob/master/examples/main.py)
 
 ```python
 # settings.py
@@ -64,8 +64,8 @@ The easiest way to run the example is with Docker Compose, which automatically s
 
 ```bash
 # Clone the repository
-git clone https://github.com/rennf93/djangoapi-guard.git
-cd djangoapi-guard/examples
+git clone https://github.com/rennf93/djapi-guard.git
+cd djapi-guard/examples
 
 # Start the app with Redis
 docker compose up
@@ -82,11 +82,11 @@ ___
 Docker Compose File
 -------------------
 
-[Docker Compose File](https://github.com/rennf93/djangoapi-guard/blob/master/examples/compose.yml)
+[Docker Compose File](https://github.com/rennf93/djapi-guard/blob/master/examples/compose.yml)
 
 ```yaml
 services:
-  djangoapi-guard-example:
+  djapi-guard-example:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -121,7 +121,7 @@ Testing Security Features
 
 You can use the included test battery to verify security features:
 
-[Test battery](https://github.com/rennf93/djangoapi-guard/blob/master/examples/test_battery.txt)
+[Test battery](https://github.com/rennf93/djapi-guard/blob/master/examples/test_battery.txt)
 
 ```bash
 # For rate limiting (will trigger after 15 requests)
@@ -158,7 +158,7 @@ ___
 Source Code
 -----------
 
-You can find the complete example code in the [examples directory](https://github.com/rennf93/djangoapi-guard/tree/master/examples) of the GitHub repository.
+You can find the complete example code in the [examples directory](https://github.com/rennf93/djapi-guard/tree/master/examples) of the GitHub repository.
 
 ___
 

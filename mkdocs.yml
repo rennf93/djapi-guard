@@ -1,8 +1,8 @@
 site_name: DjangoAPI Guard
 site_description: Security middleware for Django applications
-site_url: https://rennf93.github.io/djangoapi-guard/latest/
-repo_name: rennf93/djangoapi-guard
-repo_url: https://github.com/rennf93/djangoapi-guard
+site_url: https://rennf93.github.io/djapi-guard/latest/
+repo_name: rennf93/djapi-guard
+repo_url: https://github.com/rennf93/djapi-guard
 edit_uri: edit/main/docs/
 
 theme:
@@ -130,9 +130,9 @@ plugins:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/rennf93/djangoapi-guard
+      link: https://github.com/rennf93/djapi-guard
     - icon: fontawesome/brands/python
-      link: https://pypi.org/project/djangoapi-guard/
+      link: https://pypi.org/project/djapi-guard/
 
   analytics:
     provider: google
@@ -150,7 +150,7 @@ extra:
           data: 0
           note: >-
             Thanks for your feedback! Help us improve by using our
-            <a href="https://github.com/rennf93/djangoapi-guard/issues/new">issue tracker</a>.
+            <a href="https://github.com/rennf93/djapi-guard/issues/new">issue tracker</a>.
 
   generator: false
   meta:
@@ -161,7 +161,7 @@ extra:
     - property: og:description
       content: Comprehensive security library for Django applications providing IP control, request logging, and penetration detection
     - property: og:image
-      content: https://rennf93.github.io/djangoapi-guard/latest/assets/logo.svg
+      content: https://rennf93.github.io/djapi-guard/latest/assets/logo.svg
     - name: keywords
       content: django, security, middleware, python, ip control, rate limiting, penetration detection
 
@@ -169,7 +169,7 @@ extra:
     provider: mike
     default: latest
     version_selector: true
-    json_file: /djangoapi-guard/versions.json
+    json_file: /djapi-guard/versions.json
 
   author:
     name: Renzo Franceschini

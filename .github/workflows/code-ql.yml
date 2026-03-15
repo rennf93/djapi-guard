@@ -55,10 +55,10 @@ jobs:
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - CodeQL'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':mag:'
       #     TITLE: 'CodeQL Started'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *CODEQL TRIGGERED!*
@@ -87,10 +87,10 @@ jobs:
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - CodeQL'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'CodeQL Successful'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       Commit message:
@@ -111,10 +111,10 @@ jobs:
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - CodeQL'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'CodeQL Failed'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       CodeQL failed for commit:

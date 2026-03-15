@@ -1,5 +1,5 @@
 """
-Version bump helper script for djangoapi-guard.
+Version bump helper script for djapi-guard.
 
 Updates the version string across all files that reference it:
 - pyproject.toml
@@ -189,7 +189,7 @@ def update_index_md(version: str) -> bool:
     content = path.read_text()
 
     pattern = re.compile(
-        r"(docker pull ghcr\.io/rennf93/djangoapi-guard-example:v)"
+        r"(docker pull ghcr\.io/rennf93/djapi-guard-example:v)"
         r"[\d]+\.[\d]+\.[\d]+"
     )
     match = pattern.search(content)

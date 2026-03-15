@@ -26,10 +26,10 @@ jobs:
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Pypi Release'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':rocket:'
       #     TITLE: 'Pypi Release Started'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *NEW VERSION v${{ github.event.release.tag_name }} TRIGGERED PYPI RELEASE!*
@@ -108,10 +108,10 @@ jobs:
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Pypi Release'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Pypi Release Successful'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *Pypi Release v${{ github.event.release.tag_name }} Successful!*
@@ -134,10 +134,10 @@ jobs:
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Pypi Release'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Pypi Release Failed'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *Pypi Release v${{ github.event.release.tag_name }} Failed!*

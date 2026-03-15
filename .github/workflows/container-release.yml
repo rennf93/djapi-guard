@@ -42,10 +42,10 @@ jobs:
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Containerized Release'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':whale:'
       #     TITLE: 'Containerized Release Started'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #         .
       #         *${{ env.IS_RELEASE == 'true' && format('NEW VERSION v{0}', env.VERSION) || 'EXAMPLE CODE CHANGES' }} TRIGGERED CONTAINERIZED RELEASE!*
@@ -84,15 +84,15 @@ jobs:
 
       - name: Tag and Push to GHCR
         run: |
-          IMAGE_NAME=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "djangoapi-guard-example" | head -n 1)
+          IMAGE_NAME=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "djapi-guard-example" | head -n 1)
           echo "Using image: ${IMAGE_NAME}"
 
-          docker tag ${IMAGE_NAME} ghcr.io/${{ github.repository_owner }}/djangoapi-guard-example:latest
-          docker push ghcr.io/${{ github.repository_owner }}/djangoapi-guard-example:latest
+          docker tag ${IMAGE_NAME} ghcr.io/${{ github.repository_owner }}/djapi-guard-example:latest
+          docker push ghcr.io/${{ github.repository_owner }}/djapi-guard-example:latest
 
           if [[ "${{ env.IS_RELEASE }}" == "true" ]]; then
-            docker tag ${IMAGE_NAME} ghcr.io/${{ github.repository_owner }}/djangoapi-guard-example:${{ env.VERSION }}
-            docker push ghcr.io/${{ github.repository_owner }}/djangoapi-guard-example:${{ env.VERSION }}
+            docker tag ${IMAGE_NAME} ghcr.io/${{ github.repository_owner }}/djapi-guard-example:${{ env.VERSION }}
+            docker push ghcr.io/${{ github.repository_owner }}/djapi-guard-example:${{ env.VERSION }}
           fi
 
       # - name: Notify Success on Slack Channel
@@ -103,16 +103,16 @@ jobs:
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Containerized Release'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Containerized Release Successful'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/pkgs/container/djangoapi-guard'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/pkgs/container/djapi-guard'
       #     MESSAGE: |
       #       .
       #       *Containerized Release ${{ env.IS_RELEASE == 'true' && format('v{0}', env.VERSION) || '(from code changes)' }} Published to GHCR!*
       #       .
-      #       Example App: `ghcr.io/${{ github.repository_owner }}/djangoapi-guard-example:latest`
-      #       ${{ env.IS_RELEASE == 'true' && format('Version tag: `ghcr.io/{0}/djangoapi-guard-example:{1}`', github.repository_owner, env.VERSION) || '' }}
+      #       Example App: `ghcr.io/${{ github.repository_owner }}/djapi-guard-example:latest`
+      #       ${{ env.IS_RELEASE == 'true' && format('Version tag: `ghcr.io/{0}/djapi-guard-example:{1}`', github.repository_owner, env.VERSION) || '' }}
 
       #       Commit message:
       #         ${{ github.event.head_commit.message }}
@@ -132,10 +132,10 @@ jobs:
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Containerized Release'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Containerized Release Failed'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *Containerized Release ${{ env.IS_RELEASE == 'true' && format('v{0}', env.VERSION) || '(from code changes)' }} Failed!*

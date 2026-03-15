@@ -1,5 +1,5 @@
 [project]
-name = "djangoapi_guard"
+name = "djapi-guard"
 version = "1.0.0"
 description = "A security library for Django to control IPs, log requests, and detect penetration attempts."
 authors = [
@@ -31,7 +31,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/rennf93/djangoapi-guard"
+Homepage = "https://github.com/rennf93/djapi-guard"
 
 [project.optional-dependencies]
 dev = [

@@ -23,10 +23,10 @@ jobs:
           STATUS: 'Started'
           CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
           AUTHOR_NAME: 'Django API Guard - Scheduled Lint Check'
-          AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+          AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
           AUTHOR_ICON: ':hammer_and_wrench:'
           TITLE: 'MyPy and Ruff Checks Started'
-          TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+          TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
           MESSAGE: |
             .
             *VALIDATING MYPY AND RUFF...*
@@ -62,10 +62,10 @@ jobs:
           STATUS: 'Success'
           CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
           AUTHOR_NAME: 'Django API Guard - Scheduled Lint Check'
-          AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+          AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
           AUTHOR_ICON: ':gem:'
           TITLE: 'Up-to-date MyPy and Ruff!'
-          TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+          TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
           MESSAGE: |
             .
             **All checks passed!**
@@ -82,10 +82,10 @@ jobs:
           STATUS: 'Failed'
           CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
           AUTHOR_NAME: 'Django API Guard - Scheduled Lint Check'
-          AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+          AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
           AUTHOR_ICON: ':skull:'
           TITLE: 'Outdated MyPy and/or Ruff!'
-          TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+          TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
           MESSAGE: |
             .
             **MYPY AND RUFF ARE OUTDATED!**
@@ -111,10 +111,10 @@ jobs:
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Scheduled Docs Lint Check'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':memo:'
       #     TITLE: 'Documentation Lint Check Started'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       *VALIDATING DOCUMENTATION...*
@@ -159,10 +159,10 @@ jobs:
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Docs Lint Check'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Documentation is Up-to-date!'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       **All markdown checks passed!**
@@ -183,10 +183,10 @@ jobs:
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
       #     AUTHOR_NAME: 'Django API Guard - Docs Lint Check'
-      #     AUTHOR_LINK: 'https://github.com/rennf93/djangoapi-guard'
+      #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Documentation Issues Detected!'
-      #     TITLE_LINK: 'https://github.com/rennf93/djangoapi-guard/actions'
+      #     TITLE_LINK: 'https://github.com/rennf93/djapi-guard/actions'
       #     MESSAGE: |
       #       .
       #       **DOCUMENTATION NEEDS FIXING!**
