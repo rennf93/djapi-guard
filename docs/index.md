@@ -93,7 +93,7 @@ You can also download the example app as a Docker container from [GitHub Contain
 docker pull ghcr.io/rennf93/djapi-guard-example:latest
 
 # Or pull a specific version (matches library releases)
-docker pull ghcr.io/rennf93/djapi-guard-example:v1.0.1
+docker pull ghcr.io/rennf93/djapi-guard-example:v2.0.0
 ```
 
 ___

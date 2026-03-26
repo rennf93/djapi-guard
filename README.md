@@ -7,7 +7,7 @@
 ---
 
 <p align="center">
-    <strong>djapi-guard is a security library for Django that provides middleware to control IPs, log requests, detect penetration attempts and more. It integrates seamlessly with Django to offer robust protection against various security threats.</strong>
+    <strong>djapi-guard is a security library for Django that provides middleware to control IPs, log requests, detect penetration attempts and more. It integrates seamlessly with Django to offer robust protection against various security threats. Powered by <a href="https://github.com/rennf93/guard-core">guard-core</a>.</strong>
 </p>
 
 <p align="center">
