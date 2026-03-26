@@ -38,7 +38,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Docs Update'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Docs Update'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':books:'
       #     TITLE: 'Docs Update Started'
@@ -146,7 +146,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Docs Update'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Docs Update'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Docs Update Successful'
@@ -172,7 +172,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Docs Update'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Docs Update'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Docs Update Failed'

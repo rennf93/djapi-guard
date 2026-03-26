@@ -1,9 +1,9 @@
-# DjAPI Guard Documentation - LLMs.txt
+# DjangoAPI Guard Documentation - LLMs.txt
 # For LLM Crawlers and AI Assistants
 # Documentation Site: https://rennf93.github.io/djapi-guard
 
 ## Overview
-DjAPI Guard is a comprehensive security middleware for Django applications, providing enterprise-grade protection with minimal configuration. Powered by guard-core, the framework-agnostic security engine. This documentation site provides complete technical guides, API references, tutorials, and examples.
+DjangoAPI Guard is a comprehensive security middleware for Django applications, providing enterprise-grade protection with minimal configuration. Powered by guard-core, the framework-agnostic security engine. This documentation site provides complete technical guides, API references, tutorials, and examples.
 
 ## Documentation Structure
 
@@ -153,7 +153,7 @@ GUARD_SECURITY_CONFIG = SecurityConfig(
 )
 
 MIDDLEWARE = [
-    "djangoapi_guard.DjangoAPIGuard",
+    "djangoapi_guard.middleware.DjangoAPIGuard",
     # ... other middleware
 ]
 ```
@@ -184,7 +184,7 @@ MIDDLEWARE = [
 MIT License - Free for commercial and personal use.
 
 ## Version Information
-This documentation covers all versions of DjAPI Guard. Use the version selector to view docs for specific versions. Latest stable version is always recommended for production use.
+This documentation covers all versions of DjangoAPI Guard. Use the version selector to view docs for specific versions. Latest stable version is always recommended for production use.
 
 Default version: latest (stable)
 Provider: Mike (MkDocs versioning)

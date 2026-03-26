@@ -1,6 +1,6 @@
 # noqa
 """
-Vulture whitelist for Django API Guard.
+Vulture whitelist for DjangoAPI Guard.
 
 This file contains false positive suppressions for vulture.
 Add items here that are used but vulture incorrectly reports as unused.
@@ -112,7 +112,7 @@ call_args_list  # type: ignore  # pragma: no cover
 called  # type: ignore  # pragma: no cover
 call_count  # type: ignore  # pragma: no cover
 
-# Django API Guard specific patterns
+# DjangoAPI Guard specific patterns
 block_duration  # type: ignore  # pragma: no cover
 allowed_hosts  # type: ignore  # pragma: no cover
 auto_ban_threshold  # type: ignore  # pragma: no cover

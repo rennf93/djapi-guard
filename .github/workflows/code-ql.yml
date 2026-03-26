@@ -54,7 +54,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - CodeQL'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - CodeQL'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':mag:'
       #     TITLE: 'CodeQL Started'
@@ -86,7 +86,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - CodeQL'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - CodeQL'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'CodeQL Successful'
@@ -110,7 +110,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - CodeQL'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - CodeQL'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'CodeQL Failed'

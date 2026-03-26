@@ -57,11 +57,11 @@ Configuration
 # Include your DjangoAPI Guard configuration here
 # settings.py
 MIDDLEWARE = [
-    "djangoapi_guard.middleware.DjangoAPIGuardMiddleware",
+    "djangoapi_guard.middleware.DjangoAPIGuard",
     # ...
 ]
 
-DJANGOAPI_GUARD = {
+GUARD_SECURITY_CONFIG = {
     # Include your config here
 }
 ```

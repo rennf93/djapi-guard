@@ -3,7 +3,7 @@ site_description: Security middleware for Django applications
 site_url: https://rennf93.github.io/djapi-guard/latest/
 repo_name: rennf93/djapi-guard
 repo_url: https://github.com/rennf93/djapi-guard
-edit_uri: edit/main/docs/
+edit_uri: edit/master/docs/
 
 theme:
   name: material

@@ -37,7 +37,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    "djangoapi_guard.DjangoAPIGuard",
+    "djangoapi_guard.middleware.DjangoAPIGuard",
     "django.middleware.common.CommonMiddleware",
 ]
 

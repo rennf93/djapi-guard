@@ -37,11 +37,11 @@ If possible, provide a pseudocode example of how this feature might be implement
 # Example code showing how you'd like to use this feature
 # settings.py
 MIDDLEWARE = [
-    "djangoapi_guard.middleware.DjangoAPIGuardMiddleware",
+    "djangoapi_guard.middleware.DjangoAPIGuard",
     # ...
 ]
 
-DJANGOAPI_GUARD = {
+GUARD_SECURITY_CONFIG = {
     "new_feature": {
         # Your feature configuration here
     }

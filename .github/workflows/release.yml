@@ -25,7 +25,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Pypi Release'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Pypi Release'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':rocket:'
       #     TITLE: 'Pypi Release Started'
@@ -107,7 +107,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Pypi Release'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Pypi Release'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Pypi Release Successful'
@@ -133,7 +133,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Pypi Release'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Pypi Release'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Pypi Release Failed'

@@ -1,6 +1,6 @@
 blank_issues_enabled: false
 contact_links:
-  - name: Django API Guard Documentation
+  - name: DjangoAPI Guard Documentation
     url: https://rennf93.github.io/djapi-guard/
     about: Check the documentation for usage information and tutorials
   - name: Usage Questions

@@ -22,7 +22,7 @@ jobs:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           STATUS: 'Started'
           CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-          AUTHOR_NAME: 'Django API Guard - Scheduled Lint Check'
+          AUTHOR_NAME: 'DjangoAPI Guard - Scheduled Lint Check'
           AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
           AUTHOR_ICON: ':hammer_and_wrench:'
           TITLE: 'MyPy and Ruff Checks Started'
@@ -61,7 +61,7 @@ jobs:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           STATUS: 'Success'
           CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-          AUTHOR_NAME: 'Django API Guard - Scheduled Lint Check'
+          AUTHOR_NAME: 'DjangoAPI Guard - Scheduled Lint Check'
           AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
           AUTHOR_ICON: ':gem:'
           TITLE: 'Up-to-date MyPy and Ruff!'
@@ -81,7 +81,7 @@ jobs:
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
           STATUS: 'Failed'
           CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-          AUTHOR_NAME: 'Django API Guard - Scheduled Lint Check'
+          AUTHOR_NAME: 'DjangoAPI Guard - Scheduled Lint Check'
           AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
           AUTHOR_ICON: ':skull:'
           TITLE: 'Outdated MyPy and/or Ruff!'
@@ -110,7 +110,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Scheduled Docs Lint Check'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Scheduled Docs Lint Check'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':memo:'
       #     TITLE: 'Documentation Lint Check Started'
@@ -158,7 +158,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Docs Lint Check'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Docs Lint Check'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'Documentation is Up-to-date!'
@@ -182,7 +182,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - Docs Lint Check'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - Docs Lint Check'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'Documentation Issues Detected!'

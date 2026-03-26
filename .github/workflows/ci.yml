@@ -74,7 +74,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Started'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - CI & Tests - Py${{ matrix.python-version }}'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - CI & Tests - Py${{ matrix.python-version }}'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':test_tube:'
       #     TITLE: 'CI & Tests Started - Py${{ matrix.python-version }}'
@@ -119,7 +119,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Success'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - CI & Tests - Py${{ matrix.python-version }}'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - CI & Tests - Py${{ matrix.python-version }}'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':gem:'
       #     TITLE: 'CI & Tests Successful - Py${{ matrix.python-version }}'
@@ -149,7 +149,7 @@ jobs:
       #     SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       #     STATUS: 'Failed'
       #     CHANNEL_ID: '${{ secrets.SLACK_CHANNEL }}'
-      #     AUTHOR_NAME: 'Django API Guard - CI & Tests - Py${{ matrix.python-version }}'
+      #     AUTHOR_NAME: 'DjangoAPI Guard - CI & Tests - Py${{ matrix.python-version }}'
       #     AUTHOR_LINK: 'https://github.com/rennf93/djapi-guard'
       #     AUTHOR_ICON: ':skull:'
       #     TITLE: 'CI & Tests Failed - Py${{ matrix.python-version }}'

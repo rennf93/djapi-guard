@@ -662,7 +662,7 @@ The `SecurityConfig` class defines the structure for security configuration, inc
 - **enable_penetration_detection**: ```bool``` - Enable or disable penetration attempt detection (default: True).
 - **emergency_mode**: ```bool``` - Block all traffic except whitelisted IPs (default: False).
 - **emergency_whitelist**: ```list[str]``` - IPs allowed during emergency mode.
-- **exclude_paths**: ```list[str]``` - Paths excluded from security checks (default: ["/docs", "/redoc", "/openapi.json", "/openapi.yaml", "/favicon.ico", "/static"]).
+- **exclude_paths**: ```list[str]``` - Paths excluded from security checks (default: ["/admin", "/static", "/favicon.ico"]).
 - **security_headers**: ```dict[str, Any] | None``` - Security headers configuration following OWASP best practices.
 - **endpoint_rate_limits**: ```dict[str, tuple[int, int]]``` - Per-endpoint rate limits as {endpoint: (limit, window)}.
 - **log_suspicious_level**: ```Literal["INFO","DEBUG","WARNING","ERROR","CRITICAL"] | None``` - Log level for suspicious activity (default: "WARNING").

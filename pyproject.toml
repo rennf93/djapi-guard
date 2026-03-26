@@ -28,6 +28,10 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/rennf93/djapi-guard"
+Documentation = "https://rennf93.github.io/djapi-guard/latest/"
+Repository = "https://github.com/rennf93/djapi-guard"
+Issues = "https://github.com/rennf93/djapi-guard/issues"
+Changelog = "https://github.com/rennf93/djapi-guard/blob/master/CHANGELOG.md"
 
 [project.optional-dependencies]
 dev = [
