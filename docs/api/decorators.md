@@ -18,7 +18,7 @@ Main Decorator Class
 . SecurityDecorator
 ----------------------------
 
-::: djangoapi_guard.decorators.SecurityDecorator
+::: guard_core.decorators.SecurityDecorator
 
 ```python
 from djangoapi_guard import SecurityConfig
@@ -41,7 +41,7 @@ Mixin Classes
 . AccessControlMixin
 ---------------------
 
-::: djangoapi_guard.decorators.access_control.AccessControlMixin
+::: guard_core.decorators.access_control.AccessControlMixin
 
 - `@guard_deco.require_ip(whitelist=[], blacklist=[])` - IP address filtering
 - `@guard_deco.block_countries(countries=[])` - Block specific countries
@@ -52,7 +52,7 @@ Mixin Classes
 . AuthenticationMixin
 ---------------------
 
-::: djangoapi_guard.decorators.authentication.AuthenticationMixin
+::: guard_core.decorators.authentication.AuthenticationMixin
 
 - `@guard_deco.require_https()` - Force HTTPS
 - `@guard_deco.require_auth(type="bearer")` - Require authentication
@@ -62,7 +62,7 @@ Mixin Classes
 . RateLimitingMixin
 ---------------------
 
-::: djangoapi_guard.decorators.rate_limiting.RateLimitingMixin
+::: guard_core.decorators.rate_limiting.RateLimitingMixin
 
 - `@guard_deco.rate_limit(requests=10, window=60)` - Basic rate limiting
 - `@guard_deco.geo_rate_limit(limits={})` - Geographic rate limiting
@@ -70,7 +70,7 @@ Mixin Classes
 . BehavioralMixin
 ---------------------
 
-::: djangoapi_guard.decorators.behavioral.BehavioralMixin
+::: guard_core.decorators.behavioral.BehavioralMixin
 
 - `@guard_deco.usage_monitor(max_calls, window, action)` - Monitor endpoint usage
 - `@guard_deco.return_monitor(pattern, max_occurrences, window, action)` - Monitor return patterns
@@ -79,7 +79,7 @@ Mixin Classes
 . ContentFilteringMixin
 ---------------------
 
-::: djangoapi_guard.decorators.content_filtering.ContentFilteringMixin
+::: guard_core.decorators.content_filtering.ContentFilteringMixin
 
 - `@guard_deco.block_user_agents(patterns=[])` - Block user agent patterns
 - `@guard_deco.content_type_filter(allowed_types=[])` - Filter content types
@@ -90,7 +90,7 @@ Mixin Classes
 . AdvancedMixin
 -------------
 
-::: djangoapi_guard.decorators.advanced.AdvancedMixin
+::: guard_core.decorators.advanced.AdvancedMixin
 
 - `@guard_deco.time_window(start_time, end_time, timezone)` - Time-based access control
 - `@guard_deco.suspicious_detection(enabled=True)` - Toggle suspicious pattern detection

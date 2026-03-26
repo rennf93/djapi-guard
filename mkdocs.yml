@@ -117,7 +117,7 @@ plugins:
   - mkdocstrings:
       handlers:
         python:
-          paths: [djangoapi_guard]
+          paths: [., djangoapi_guard]
           options:
             show_source: true
             show_root_heading: true

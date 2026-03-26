@@ -8,7 +8,7 @@ keywords: behavior manager, djangoapi guard, behavioral analysis, monitoring
 Behavior Manager
 =================
 
-::: djangoapi_guard.handlers.behavior_handler.BehaviorTracker
+::: guard_core.handlers.behavior_handler.BehaviorTracker
 
 The Behavior Manager handles behavioral analysis for detecting suspicious usage patterns.
 
@@ -17,7 +17,7 @@ ___
 BehaviorRule
 ------------
 
-::: djangoapi_guard.handlers.behavior_handler.BehaviorRule
+::: guard_core.handlers.behavior_handler.BehaviorRule
 
 Rule types: `usage`, `return_pattern`, `frequency`
 
