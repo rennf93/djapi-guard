@@ -1,5 +1,4 @@
 from collections.abc import Callable
-from typing import Any
 from unittest.mock import patch
 
 from django.http import HttpRequest, HttpResponse
@@ -66,8 +65,9 @@ def test_behavior_tracker_threaded_through_behavioral_context() -> None:
 
 def test_execute_security_pipeline_returns_none_when_pipeline_unbuilt() -> None:
     mw = _build(SecurityConfig(enable_redis=False))
-    from djangoapi_guard.adapters import DjangoGuardRequest
     from django.test import RequestFactory
+
+    from djangoapi_guard.adapters import DjangoGuardRequest
 
     request = RequestFactory().get("/")
     guard_request = DjangoGuardRequest(request)

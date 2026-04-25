@@ -3,6 +3,18 @@ Changelog
 
 ___
 
+v2.2.0 (2026-04-25)
+-------------------
+
+guard-core 2.0.0 compatibility (v2.2.0)
+---------------------------------------
+
+- **Compat** — Requires guard-core 2.0.0 or newer. Adapter middleware updated to match the new `suspicious_request_counts: dict[str, dict[str, int]]` protocol shape and `DetectionResult` return type. User code that didn't reach into those internals is unaffected.
+- **Changed** — `DjangoAPIGuard.suspicious_request_counts` is now `dict[str, dict[str, int]]` to mirror the per-IP, per-category counters introduced by guard-core 2.0.0.
+- **Tests** — `tests/test_middleware.py` mocks for `detect_penetration_patterns` and `detect_penetration_attempt` now return `DetectionResult(is_threat=..., trigger_info=...)` instead of the legacy `(bool, str)` tuple.
+
+___
+
 v2.1.1 (2026-04-25)
 -------------------
 

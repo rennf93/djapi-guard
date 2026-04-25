@@ -44,7 +44,7 @@ class DjangoAPIGuard:
             self.config.custom_log_file, log_format=self.config.log_format
         )
         self.last_cloud_ip_refresh: int = 0
-        self.suspicious_request_counts: dict[str, int] = {}
+        self.suspicious_request_counts: dict[str, dict[str, int]] = {}
         self.last_cleanup: float = time.time()
         self.rate_limit_handler: RateLimitManager = RateLimitManager(self.config)
         self.guard_decorator: BaseSecurityDecorator | None = None

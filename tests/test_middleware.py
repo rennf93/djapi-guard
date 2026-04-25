@@ -10,6 +10,7 @@ from django.http import HttpRequest, HttpResponse
 from django.test import RequestFactory
 from guard_core.decorators.base import BaseSecurityDecorator
 from guard_core.models import SecurityConfig
+from guard_core.sync.detection_result import DetectionResult
 from guard_core.sync.handlers.cloud_handler import cloud_handler
 from guard_core.sync.handlers.ratelimit_handler import (
     RateLimitManager,
@@ -376,14 +377,18 @@ class TestDjangoAPIGuard:
         with (
             patch(
                 "guard_core.sync.core.checks.implementations.suspicious_activity.detect_penetration_patterns",
-                return_value=(True, "SQL injection attempt"),
+                return_value=DetectionResult(
+                    is_threat=True, trigger_info="SQL injection attempt"
+                ),
             ),
             patch(
                 "guard_core.sync.core.checks.implementations.suspicious_activity.log_activity"
             ),
             patch(
                 "guard_core.sync.utils.detect_penetration_attempt",
-                return_value=(True, "SQL injection attempt"),
+                return_value=DetectionResult(
+                    is_threat=True, trigger_info="SQL injection attempt"
+                ),
             ),
         ):
             request = factory.get("/login")
