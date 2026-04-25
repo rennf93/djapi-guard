@@ -35,12 +35,28 @@ def is_user_agent_allowed(user_agent: str, config: SecurityConfig) -> bool:
 def is_ip_allowed(ip: str, config: SecurityConfig, ipinfo_db=None) -> bool:
     """Check if IP address is allowed."""
 
-def detect_penetration_attempt(request: HttpRequest) -> tuple[bool, str]:
+def detect_penetration_attempt(
+    request: HttpRequest,
+    config: SecurityConfig | None = None,
+    route_config: RouteConfig | None = None,
+) -> DetectionResult:
     """Detect potential penetration attempts using the Detection Engine."""
 
 def extract_client_ip(request: HttpRequest, config: SecurityConfig, agent_handler=None) -> str:
     """Securely extract the client IP address from the request."""
 ```
+
+___
+
+Detection Result
+----------------
+
+`detect_penetration_attempt` returns a `DetectionResult` dataclass with the following fields:
+
+- `is_threat: bool` - Whether a threat was detected.
+- `trigger_info: str` - Human-readable description of the matched component and pattern.
+- `threat_categories: list[str]` - Categories raised by the detection engine (e.g. `sql_injection`, `xss`).
+- `threat_scores: dict[str, float]` - Per-category confidence scores produced by the detection engine.
 
 ___
 
@@ -53,5 +69,12 @@ from guard_core.sync.utils import setup_custom_logging, detect_penetration_attem
 logger = setup_custom_logging("security.log")
 
 # Check for penetration attempts
-is_suspicious, trigger_info = detect_penetration_attempt(request)
+result = detect_penetration_attempt(request)
+if result.is_threat:
+    logger.warning(
+        "Suspicious request from %s: %s (categories=%s)",
+        request.META.get("REMOTE_ADDR"),
+        result.trigger_info,
+        result.threat_categories,
+    )
 ```
