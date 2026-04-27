@@ -10,9 +10,12 @@ from typing import Any, cast
 from unittest.mock import Mock
 
 import pytest
-from django.http import HttpRequest, HttpResponse
+from django.http import HttpResponse
+from guard_core.protocols.response_protocol import GuardResponse
+from guard_core.sync.protocols.request_protocol import SyncGuardRequest
 
 from djangoapi_guard import SecurityConfig, SecurityDecorator
+from djangoapi_guard.adapters import DjangoGuardResponse
 
 
 @pytest.fixture
@@ -92,9 +95,11 @@ def test_custom_validation_decorator_applied(decorator: SecurityDecorator) -> No
     mock_func.__name__ = mock_func.__qualname__ = "custom_view"
     mock_func.__module__ = "test_module"
 
-    def custom_validator(request: HttpRequest) -> HttpResponse | None:
-        if "forbidden" in request.path:
-            return HttpResponse("Custom validation failed", status=400)
+    def custom_validator(request: SyncGuardRequest) -> GuardResponse | None:
+        if "forbidden" in request.url_path:
+            return DjangoGuardResponse(
+                HttpResponse("Custom validation failed", status=400)
+            )
         return None
 
     custom_dec = decorator.custom_validation(custom_validator)
@@ -162,7 +167,7 @@ def test_content_filtering_decorators_unit(security_config: SecurityConfig) -> N
     mock_func5.__name__ = mock_func5.__qualname__ = "test_func5"
     mock_func5.__module__ = "test_module"
 
-    def test_validator(request: HttpRequest) -> HttpResponse | None:
+    def test_validator(request: SyncGuardRequest) -> GuardResponse | None:
         return None
 
     custom_decorator = decorator.custom_validation(test_validator)
@@ -174,7 +179,7 @@ def test_content_filtering_decorators_unit(security_config: SecurityConfig) -> N
     assert len(route_config5.custom_validators) == 1
     assert route_config5.custom_validators[0] == test_validator
 
-    result = test_validator(Mock())
+    result = test_validator(cast(SyncGuardRequest, Mock()))
     assert result is None
 
 
@@ -207,8 +212,8 @@ def test_custom_validator_returns_response(security_config: SecurityConfig) -> N
     mock_func.__name__ = mock_func.__qualname__ = "validated_view"
     mock_func.__module__ = "test_module"
 
-    def blocking_validator(request: HttpRequest) -> HttpResponse | None:
-        return HttpResponse("Blocked", status=400)
+    def blocking_validator(request: SyncGuardRequest) -> GuardResponse | None:
+        return DjangoGuardResponse(HttpResponse("Blocked", status=400))
 
     custom_dec = decorator.custom_validation(blocking_validator)
     decorated = custom_dec(mock_func)
@@ -217,6 +222,6 @@ def test_custom_validator_returns_response(security_config: SecurityConfig) -> N
     assert route_config is not None
     validator = route_config.custom_validators[0]
 
-    result = validator(Mock())
+    result = validator(cast(SyncGuardRequest, Mock()))
     assert result is not None
     assert result.status_code == 400

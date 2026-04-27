@@ -9,6 +9,7 @@ django.setup()
 import sys
 import types
 from collections.abc import Iterator
+from typing import Any, cast
 from unittest.mock import Mock, patch
 
 import pytest
@@ -27,7 +28,7 @@ def _install_mock_guard_agent() -> types.ModuleType:
             for k, v in kwargs.items():
                 setattr(self, k, v)
 
-    mock_module.SecurityEvent = MockSecurityEvent  # type: ignore[attr-defined]
+    cast(Any, mock_module).SecurityEvent = MockSecurityEvent
     sys.modules["guard_agent"] = mock_module
     return mock_module
 

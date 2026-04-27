@@ -6,6 +6,7 @@ import pytest
 from django.test import RequestFactory
 from guard_core.models import SecurityConfig
 from guard_core.sync.handlers.ipban_handler import ip_ban_manager
+from guard_core.sync.handlers.ratelimit_handler import RateLimitManager
 from guard_core.sync.handlers.security_headers_handler import security_headers_manager
 from guard_core.sync.handlers.suspatterns_handler import sus_patterns_handler
 
@@ -75,3 +76,12 @@ def reset_headers_manager() -> Iterator[None]:
     yield
     security_headers_manager.enabled = False
     security_headers_manager.headers_cache.clear()
+
+
+@pytest.fixture(autouse=True)
+def reset_ratelimit_singleton() -> Iterator[None]:
+    yield
+    if RateLimitManager._instance is not None:
+        RateLimitManager._instance.request_timestamps.clear()
+        RateLimitManager._instance.redis_handler = None
+        RateLimitManager._instance.agent_handler = None

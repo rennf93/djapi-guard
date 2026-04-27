@@ -3,6 +3,23 @@ Changelog
 
 ___
 
+v3.0.0 (2026-04-26)
+-------------------
+
+Pipeline-first CORS via guard_core.cors_handler (v3.0.0)
+--------------------------------------------------------
+
+- **Breaking** — Preflight `OPTIONS` requests are now subject to the security pipeline. Previously the middleware short-circuited preflights ahead of `_execute_security_pipeline` (the `if config.enable_cors and request.method == "OPTIONS"` block at line 227), allowing banned IPs and rate-limited clients to preflight freely.
+- **Fixed** — Cross-origin preflight requests to passthrough paths (e.g. `exclude_paths=["/health"]`) now receive a valid CORS response. Preflight handling runs ahead of the passthrough/bypass short-circuit so the browser permission check works for excluded paths.
+- **Fixed** — Cross-origin GETs to passthrough/bypass paths now carry CORS headers on their responses.
+- **Fixed (latent)** — `middleware.py` was importing `BaseSecurityDecorator` and `RouteConfig` from `guard_core.decorators.base` (the async path) when it should have been using `guard_core.sync.decorators.base`. Sync/async protocol mismatches cascaded from there. Surfaced after removing the `[[tool.mypy.overrides]] follow_imports = "skip"` block.
+- **Fixed (latent)** — `cloud_handler.refresh(ttl=...)` was being called with a `ttl` kwarg the method does not accept; correct call is `refresh_async()`.
+- **Fixed (latent)** — 4 tests passed `agent_model="..."` to `SecurityConfig`; that field does not exist on the model.
+- **Internal** — CORS preflight handling moved to the shared `guard_core.sync.handlers.cors_handler.CorsHandler` module. Removed all six `[[tool.mypy.overrides]]` suppression blocks (`redis.*`, `guard_agent.*`, `guard_core.*`, `django.*`, `examples.*`, `example_app.*`/`advanced_app.*`). Installed `django-stubs` as dev dep; `redis` 7.x, `guard-core` 2.2.0, `guard-agent` 2.2.0 all ship `py.typed`. Stripped `[tool.uv.sources] guard-core` local-path block from committed pyproject.toml. Added `reset_ratelimit_singleton` autouse fixture to `tests/conftest.py` so test runs no longer accumulate rate-limit state across tests.
+- **Requires** — `guard-core>=2.2.0` (declared as unconstrained `guard-core` in pyproject; documented here for upgrade guidance).
+
+___
+
 v2.2.0 (2026-04-25)
 -------------------
 

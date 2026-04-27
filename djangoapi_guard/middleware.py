@@ -1,11 +1,10 @@
 import logging
 import time
 from collections.abc import Callable
-from typing import Any
+from typing import Any, cast
 
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
-from guard_core.decorators.base import BaseSecurityDecorator, RouteConfig
 from guard_core.models import SecurityConfig
 from guard_core.sync.core.behavioral import BehavioralContext, BehavioralProcessor
 from guard_core.sync.core.bypass import BypassContext, BypassHandler
@@ -15,7 +14,9 @@ from guard_core.sync.core.initialization import HandlerInitializer
 from guard_core.sync.core.responses import ErrorResponseFactory, ResponseContext
 from guard_core.sync.core.routing import RouteConfigResolver, RoutingContext
 from guard_core.sync.core.validation import RequestValidator, ValidationContext
+from guard_core.sync.decorators.base import BaseSecurityDecorator, RouteConfig
 from guard_core.sync.handlers.cloud_handler import cloud_handler
+from guard_core.sync.handlers.cors_handler import CorsHandler, is_preflight
 from guard_core.sync.handlers.ratelimit_handler import RateLimitManager
 from guard_core.sync.handlers.security_headers_handler import security_headers_manager
 from guard_core.sync.utils import extract_client_ip, setup_custom_logging
@@ -61,6 +62,9 @@ class DjangoAPIGuard:
         self.bypass_handler: BypassHandler | None = None
         self.behavioral_processor: BehavioralProcessor | None = None
         self._guard_response_factory = DjangoResponseFactory()
+        self._cors_handler: CorsHandler | None = (
+            CorsHandler(self.config) if self.config.enable_cors else None
+        )
 
         self._configure_security_headers(self.config)
         self._init_geo_ip_handler()
@@ -220,32 +224,39 @@ class DjangoAPIGuard:
         assert self.bypass_handler is not None
         assert self.route_resolver is not None
 
-        request._guard_request_start_time = time.time()
+        cast(Any, request)._guard_request_start_time = time.time()
         guard_request = DjangoGuardRequest(request)
         self._populate_guard_state(guard_request, request)
 
-        if self.config.enable_cors and request.method == "OPTIONS":
-            return self._handle_preflight(request)
+        request_headers = dict(request.headers)
+
+        if self._cors_handler is not None and is_preflight(
+            request.method or "", request_headers
+        ):
+            blocking = self._execute_security_pipeline(guard_request)
+            if blocking:
+                return self._attach_cors_headers(blocking, request)
+            return self._build_preflight_response(request_headers)
 
         passthrough = self.bypass_handler.handle_passthrough(guard_request)
         if passthrough is not None:
-            return unwrap_response(passthrough)
+            return self._attach_cors_headers(unwrap_response(passthrough), request)
 
         client_ip = extract_client_ip(guard_request, self.config, self.agent_handler)
         route_config = self.route_resolver.get_route_config(guard_request)
 
-        request._guard_client_ip = client_ip
-        request._guard_route_config = route_config
+        cast(Any, request)._guard_client_ip = client_ip
+        cast(Any, request)._guard_route_config = route_config
 
         bypass = self.bypass_handler.handle_security_bypass(
             guard_request, route_config=route_config
         )
         if bypass is not None:
-            return unwrap_response(bypass)
+            return self._attach_cors_headers(unwrap_response(bypass), request)
 
         blocking = self._execute_security_pipeline(guard_request)
         if blocking:
-            return blocking
+            return self._attach_cors_headers(blocking, request)
 
         self._process_behavioral_usage(guard_request, client_ip, route_config)
 
@@ -274,6 +285,26 @@ class DjangoAPIGuard:
                 guard_request, client_ip, route_config
             )
 
+    def _build_preflight_response(
+        self, request_headers: dict[str, str]
+    ) -> HttpResponse:
+        assert self._cors_handler is not None
+        preflight = self._cors_handler.build_preflight_response(request_headers)
+        response = HttpResponse(preflight.body, status=preflight.status_code)
+        for key, value in preflight.headers.items():
+            response[key] = value
+        return response
+
+    def _attach_cors_headers(
+        self, response: HttpResponse, request: HttpRequest
+    ) -> HttpResponse:
+        if self._cors_handler is None:
+            return response
+        cors_headers = self._cors_handler.build_response_headers(dict(request.headers))
+        for key, value in cors_headers.items():
+            response[key] = value
+        return response
+
     def _finalize_response(
         self,
         request: HttpRequest,
@@ -297,7 +328,14 @@ class DjangoAPIGuard:
             route_config,
             process_behavioral_rules=self.behavioral_processor.process_return_rules,
         )
-        return unwrap_response(result)
+        final = unwrap_response(result)
+        if self._cors_handler:
+            cors_headers = self._cors_handler.build_response_headers(
+                dict(request.headers)
+            )
+            for key, value in cors_headers.items():
+                final[key] = value
+        return final
 
     def _initialize_handlers(self) -> None:
         if self.handler_initializer is None:
@@ -403,14 +441,6 @@ class DjangoAPIGuard:
         if self.handler_initializer:
             self.handler_initializer.guard_decorator = decorator_handler
 
-    def _handle_preflight(self, request: HttpRequest) -> HttpResponse:
-        if self.response_factory is None:
-            raise RuntimeError("response_factory not initialized")
-        guard_response = self._guard_response_factory.create_response("", 204)
-        origin = request.META.get("HTTP_ORIGIN", "")
-        self.response_factory.apply_cors_headers(guard_response, origin)
-        return unwrap_response(guard_response)
-
     def _check_time_window(self, time_restrictions: dict[str, str]) -> bool:
         if self.validator is None:
             raise RuntimeError("validator not initialized")
@@ -490,7 +520,7 @@ class DjangoAPIGuard:
     def refresh_cloud_ip_ranges(self) -> None:
         if not self.config.block_cloud_providers:
             return
-        cloud_handler.refresh(
+        cloud_handler.refresh_async(
             self.config.block_cloud_providers,
             ttl=self.config.cloud_ip_refresh_interval,
         )
@@ -501,8 +531,9 @@ class DjangoAPIGuard:
     ) -> DjangoGuardResponse:
         if self.response_factory is None:
             raise RuntimeError("response_factory not initialized")
-        result: DjangoGuardResponse = self.response_factory.create_error_response(
-            status_code, default_message
+        result: DjangoGuardResponse = cast(
+            DjangoGuardResponse,
+            self.response_factory.create_error_response(status_code, default_message),
         )
         return result
 

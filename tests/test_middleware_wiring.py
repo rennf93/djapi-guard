@@ -33,6 +33,8 @@ def test_event_bus_routes_through_composite_when_otel_enabled() -> None:
     config = SecurityConfig(enable_otel=True, otel_service_name="wire-test")
     mw = _build(_Settings(config))
 
+    assert mw.event_bus is not None
+    assert mw.metrics_collector is not None
     assert isinstance(mw.event_bus.agent_handler, CompositeAgentHandler)
     assert isinstance(mw.metrics_collector.agent_handler, CompositeAgentHandler)
 
@@ -41,6 +43,8 @@ def test_event_bus_routes_through_composite_when_logfire_enabled() -> None:
     config = SecurityConfig(enable_logfire=True, logfire_service_name="wire-test")
     mw = _build(_Settings(config))
 
+    assert mw.event_bus is not None
+    assert mw.metrics_collector is not None
     assert isinstance(mw.event_bus.agent_handler, CompositeAgentHandler)
     assert isinstance(mw.metrics_collector.agent_handler, CompositeAgentHandler)
 
@@ -49,6 +53,8 @@ def test_event_bus_stays_bare_when_no_telemetry_configured() -> None:
     config = SecurityConfig()
     mw = _build(_Settings(config))
 
+    assert mw.event_bus is not None
+    assert mw.metrics_collector is not None
     assert not isinstance(mw.event_bus.agent_handler, CompositeAgentHandler)
     assert not isinstance(mw.metrics_collector.agent_handler, CompositeAgentHandler)
 
@@ -57,6 +63,10 @@ def test_contexts_use_the_post_initialize_event_bus() -> None:
     config = SecurityConfig(enable_otel=True, otel_service_name="wire-test")
     mw = _build(_Settings(config))
 
+    assert mw.validator is not None
+    assert mw.bypass_handler is not None
+    assert mw.behavioral_processor is not None
+    assert mw.response_factory is not None
     assert mw.validator.context.event_bus is mw.event_bus
     assert mw.bypass_handler.context.event_bus is mw.event_bus
     assert mw.behavioral_processor.context.event_bus is mw.event_bus

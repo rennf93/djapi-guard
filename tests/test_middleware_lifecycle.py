@@ -33,6 +33,7 @@ def test_init_rebinds_agent_handler_to_composite() -> None:
     )
     mw = _build(config)
 
+    assert mw.handler_initializer is not None
     assert mw.handler_initializer.composite_handler is not None
     assert mw.agent_handler is mw.handler_initializer.composite_handler
 
@@ -40,6 +41,7 @@ def test_init_rebinds_agent_handler_to_composite() -> None:
 def test_no_telemetry_leaves_agent_handler_bare() -> None:
     mw = _build(SecurityConfig(enable_redis=False))
 
+    assert mw.handler_initializer is not None
     assert mw.handler_initializer.composite_handler is None
     assert mw.agent_handler is None
 
@@ -56,6 +58,8 @@ def test_behavior_tracker_threaded_through_behavioral_context() -> None:
     )
     mw = _build(config)
 
+    assert mw.handler_initializer is not None
+    assert mw.behavioral_processor is not None
     assert mw.handler_initializer.behavior_tracker is not None
     assert (
         mw.behavioral_processor.context.behavior_tracker

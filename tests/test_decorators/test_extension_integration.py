@@ -6,12 +6,14 @@ import django
 
 django.setup()
 
+from collections.abc import Awaitable, Callable
 from typing import Any, cast
 from unittest.mock import MagicMock, Mock, patch
 
 import pytest
 from django.http import HttpRequest, HttpResponse
-from guard_core.decorators.base import RouteConfig
+from guard_core.protocols.response_protocol import GuardResponse
+from guard_core.sync.decorators.base import RouteConfig
 from guard_core.sync.handlers.behavior_handler import BehaviorRule
 
 from djangoapi_guard import SecurityConfig, SecurityDecorator
@@ -416,7 +418,7 @@ def test_get_route_decorator_config_no_matching_route(
     django_request.method = "GET"
     django_request.META["SERVER_NAME"] = "localhost"
     django_request.META["SERVER_PORT"] = "80"
-    django_request.guard_route_id = "nonexistent_route_id"
+    cast(Any, django_request).guard_route_id = "nonexistent_route_id"
 
     assert middleware.route_resolver is not None
     result = middleware.route_resolver.get_route_config(
@@ -444,14 +446,16 @@ def test_bypass_all_security_checks(security_config: SecurityConfig) -> None:
 
 
 def test_bypass_all_security_checks_with_custom_modifier() -> None:
-    def custom_modifier(response: HttpResponse) -> HttpResponse:
-        return HttpResponse("custom modified", status=202)
+    def custom_modifier(response: GuardResponse) -> GuardResponse:
+        return response
 
     config = SecurityConfig(
         enable_redis=False,
         enable_agent=False,
         enable_penetration_detection=False,
-        custom_response_modifier=custom_modifier,
+        custom_response_modifier=cast(
+            Callable[[GuardResponse], Awaitable[GuardResponse]], custom_modifier
+        ),
     )
 
     decorator = SecurityDecorator(config)

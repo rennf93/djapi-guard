@@ -1,6 +1,6 @@
 [project]
 name = "djapi-guard"
-version = "2.2.0"
+version = "3.0.0"
 description = "A security library for Django to control IPs, log requests, and detect penetration attempts."
 authors = [
     {name = "Renzo Franceschini", email = "rennf93@users.noreply.github.com"}
@@ -37,6 +37,8 @@ Changelog = "https://github.com/rennf93/djapi-guard/blob/master/CHANGELOG.md"
 dev = [
     "bandit[toml]",
     "deptry",
+    "django-stubs",
+    "guard-agent",
     "httpx",
     "mkdocs",
     "mkdocstrings",
@@ -126,32 +128,11 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_no_return = true
 warn_unreachable = true
-exclude = ["vulture_whitelist.py", ".venv", "setup.py"]
+exclude = ["vulture_whitelist.py", ".venv", "setup.py", "examples"]
+plugins = ["mypy_django_plugin.main"]
 
-[[tool.mypy.overrides]]
-module = "redis.*"
-follow_imports = "skip"
-
-[[tool.mypy.overrides]]
-module = "guard_agent.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = ["guard_core", "guard_core.*", "guard_core.sync.*", "guard_core.sync.handlers.*", "guard_core.sync.protocols.*", "guard_core.sync.core.*"]
-ignore_missing_imports = true
-follow_imports = "skip"
-
-[[tool.mypy.overrides]]
-module = "django.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "examples.*"
-disallow_untyped_decorators = false
-
-[[tool.mypy.overrides]]
-module = ["example_app.*", "advanced_app.*"]
-ignore_missing_imports = true
+[tool.django-stubs]
+django_settings_module = "tests.settings"
 
 [tool.pymarkdown.plugins.md007]
 enabled = true
@@ -232,8 +213,10 @@ ignore = []
 exclude = ["tests", ".venv", "vulture_whitelist.py", "examples", "docs"]
 extend_exclude = ["conftest.py", "setup.py"]
 known_first_party = ["djangoapi_guard", "guard_core"]
-per_rule_ignores = { "DEP001" = ["guard_agent"], "DEP002" = [
+per_rule_ignores = { "DEP002" = [
     "bandit",
+    "django-stubs",
+    "guard-agent",
     "guard-core",
     "httpx",
     "deptry",

@@ -15,7 +15,7 @@ class DjangoGuardRequest:
 
     @property
     def url_scheme(self) -> str:
-        result: str = self._request.scheme
+        result: str = self._request.scheme or ""
         return result
 
     @property
@@ -33,7 +33,7 @@ class DjangoGuardRequest:
 
     @property
     def method(self) -> str:
-        result: str = self._request.method
+        result: str = self._request.method or ""
         return result
 
     @property

@@ -1,6 +1,6 @@
 import os
-from collections.abc import Generator
-from typing import Any
+from collections.abc import Awaitable, Callable, Generator
+from typing import cast
 from unittest.mock import MagicMock, patch
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "tests.settings")
@@ -13,9 +13,12 @@ import pytest
 from django.http import HttpRequest, HttpResponse
 from django.test import RequestFactory
 from guard_core.models import SecurityConfig
+from guard_core.protocols.request_protocol import GuardRequest
+from guard_core.protocols.response_protocol import GuardResponse
 from guard_core.sync.handlers.cloud_handler import cloud_handler
 from guard_core.sync.handlers.ipban_handler import ip_ban_manager
 from guard_core.sync.handlers.ratelimit_handler import RateLimitManager
+from guard_core.sync.protocols.request_protocol import SyncGuardRequest
 
 from djangoapi_guard.middleware import DjangoAPIGuard
 
@@ -26,7 +29,7 @@ def _get_response(request: HttpRequest) -> HttpResponse:
 
 
 def _make_middleware(
-    config: SecurityConfig | None = None, **settings_overrides: Any
+    config: SecurityConfig | None = None,
 ) -> DjangoAPIGuard:
     """Create a DjangoAPIGuard instance with the given config."""
     if config is None:
@@ -222,10 +225,12 @@ def test_cors_preflight() -> None:
     request = factory.options(
         "/api/test",
         HTTP_ORIGIN="https://example.com",
+        HTTP_ACCESS_CONTROL_REQUEST_METHOD="GET",
     )
     request.META["REMOTE_ADDR"] = "127.0.0.1"
     response = middleware(request)
-    assert response.status_code == 204
+    assert response.status_code == 200
+    assert response["Access-Control-Allow-Origin"] == "https://example.com"
 
 
 def test_penetration_detection() -> None:
@@ -338,11 +343,9 @@ def test_https_enforcement() -> None:
 
 
 def test_guard_with_custom_check() -> None:
-    """Test custom request check."""
-
     from djangoapi_guard.adapters import DjangoGuardResponse
 
-    def custom_check(request):  # type: ignore[no-untyped-def]
+    def custom_check(request: SyncGuardRequest) -> GuardResponse | None:
         if request.headers.get("X-Custom") == "block":
             return DjangoGuardResponse(HttpResponse("Blocked", status=403))
         return None
@@ -351,7 +354,9 @@ def test_guard_with_custom_check() -> None:
         enable_redis=False,
         enable_agent=False,
         enable_penetration_detection=False,
-        custom_request_check=custom_check,
+        custom_request_check=cast(
+            Callable[[GuardRequest], Awaitable[GuardResponse | None]], custom_check
+        ),
     )
     middleware = _make_middleware(config)
     factory = RequestFactory()
@@ -363,9 +368,7 @@ def test_guard_with_custom_check() -> None:
 
 
 def test_guard_with_custom_response_modifier() -> None:
-    """Test custom response modifier."""
-
-    def custom_modifier(response):  # type: ignore[no-untyped-def]
+    def custom_modifier(response: GuardResponse) -> GuardResponse:
         response.headers["X-Custom-Header"] = "modified"
         return response
 
@@ -373,7 +376,9 @@ def test_guard_with_custom_response_modifier() -> None:
         enable_redis=False,
         enable_agent=False,
         enable_penetration_detection=False,
-        custom_response_modifier=custom_modifier,
+        custom_response_modifier=cast(
+            Callable[[GuardResponse], Awaitable[GuardResponse]], custom_modifier
+        ),
     )
     middleware = _make_middleware(config)
     factory = RequestFactory()
@@ -495,8 +500,7 @@ def test_auto_ban_threshold() -> None:
 
 
 def test_set_decorator_handler() -> None:
-    """Test setting a decorator handler."""
-    from guard_core.decorators.base import BaseSecurityDecorator
+    from guard_core.sync.decorators.base import BaseSecurityDecorator
 
     config = SecurityConfig(
         enable_redis=False,
@@ -520,7 +524,7 @@ def test_refresh_cloud_ip_ranges() -> None:
     )
     middleware = _make_middleware(config)
 
-    with patch.object(cloud_handler, "refresh") as mock_refresh:
+    with patch.object(cloud_handler, "refresh_async") as mock_refresh:
         middleware.refresh_cloud_ip_ranges()
         mock_refresh.assert_called_once()
 
