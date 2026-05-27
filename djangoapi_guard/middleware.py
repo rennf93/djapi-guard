@@ -527,8 +527,11 @@ class DjangoAPIGuard:
     def refresh_cloud_ip_ranges(self) -> None:
         if not self.config.block_cloud_providers:
             return
+        providers: set[str] = {
+            str(provider) for provider in self.config.block_cloud_providers
+        }
         cloud_handler.refresh_async(
-            self.config.block_cloud_providers,
+            providers,
             ttl=self.config.cloud_ip_refresh_interval,
         )
         self.last_cloud_ip_refresh = int(time.time())
