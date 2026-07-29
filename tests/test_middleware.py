@@ -1024,7 +1024,8 @@ class TestDjangoAPIGuard:
         request.META["REMOTE_ADDR"] = "127.0.0.1"
         request.META["HTTP_X_FORWARDED_FOR"] = "2001:db8:dead::beef"
         response = middleware(request)
-        assert response.status_code == 403
+        # In both a whitelist CIDR and the blacklist: whitelist overrides
+        assert response.status_code == 200
 
         request = factory.get("/")
         request.META["REMOTE_ADDR"] = "127.0.0.1"
@@ -1060,7 +1061,8 @@ class TestDjangoAPIGuard:
         request.META["REMOTE_ADDR"] = "127.0.0.1"
         request.META["HTTP_X_FORWARDED_FOR"] = "192.168.1.100"
         response = middleware(request)
-        assert response.status_code == 403
+        # In both a whitelist CIDR and the blacklist: whitelist overrides
+        assert response.status_code == 200
 
         request = factory.get("/")
         request.META["REMOTE_ADDR"] = "127.0.0.1"
@@ -1078,7 +1080,8 @@ class TestDjangoAPIGuard:
         request.META["REMOTE_ADDR"] = "127.0.0.1"
         request.META["HTTP_X_FORWARDED_FOR"] = "2001:db8:dead::beef"
         response = middleware(request)
-        assert response.status_code == 403
+        # In both a whitelist CIDR and the blacklist: whitelist overrides
+        assert response.status_code == 200
 
     def test_ipv6_rate_limiting(self) -> None:
         config = SecurityConfig(
@@ -1529,6 +1532,31 @@ class TestDjangoAPIGuardCoverage:
             middleware._populate_guard_state(guard_request, request)
         assert cast(Any, request).guard_route_id == "test_id"
         assert cast(Any, request).guard_endpoint_id == "test_module.TestView"
+
+    def test_populate_guard_state_marks_unresolvable_path(self) -> None:
+        middleware = self._make_middleware()
+        request = HttpRequest()
+        request.path = "/no-such-path"
+        request.META["SERVER_NAME"] = "localhost"
+        request.META["SERVER_PORT"] = "80"
+
+        guard_request = DjangoGuardRequest(request)
+        middleware._populate_guard_state(guard_request, request)
+
+        assert cast(Any, request).guard_route_unresolved is True
+
+    def test_populate_guard_state_leaves_undecorated_view_resolved(self) -> None:
+        middleware = self._make_middleware()
+        request = HttpRequest()
+        request.path = "/"
+        request.META["SERVER_NAME"] = "localhost"
+        request.META["SERVER_PORT"] = "80"
+
+        guard_request = DjangoGuardRequest(request)
+        middleware._populate_guard_state(guard_request, request)
+
+        assert not hasattr(request, "guard_route_unresolved")
+        assert not hasattr(request, "guard_route_id")
 
     def test_call_passthrough_response(self) -> None:
         middleware = self._make_middleware()

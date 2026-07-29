@@ -34,6 +34,7 @@ Core Security Settings
 | `enable_penetration_detection` | bool | True | Enable penetration attempt detection |
 | `auto_ban_threshold` | int | 10 | Number of suspicious requests before auto-ban |
 | `auto_ban_duration` | int | 3600 | Auto-ban duration in seconds |
+| `route_resolution_strict` | bool | False | Block with 500 when Django could not resolve the request path to a view, instead of running the pipeline with no per-route config. Also turns unresolvable paths into 500s rather than 404s. Requires guard-core >= 3.7.0 |
 
 Detection Engine Settings
 -------------------------

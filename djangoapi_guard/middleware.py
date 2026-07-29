@@ -224,7 +224,7 @@ class DjangoAPIGuard:
                     f"{view_func.__module__}.{view_func.__qualname__}"
                 )
         except Resolver404:
-            pass
+            guard_request.state.guard_route_unresolved = True
 
     def __call__(self, request: HttpRequest) -> HttpResponse:
         self._assert_initialized()

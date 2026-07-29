@@ -3,6 +3,18 @@ Changelog
 
 ___
 
+v4.1.0 (2026-07-29)
+-------------------
+
+Unresolvable paths are reported to guard-core (v4.1.0)
+-------------------------------------------------------
+
+- **Added** — `_populate_guard_state()` swallowed `Resolver404` and left `request.state` untouched, which is indistinguishable from a view that simply carries no decorators. guard-core reads both as "nothing to enforce", so a resolution failure silently skips every per-route check — the fail-open half of [GHSA-f2vm-w8gq-h378](https://github.com/rennf93/fastapi-guard/security/advisories/GHSA-f2vm-w8gq-h378), reported against the Starlette adapter. Django resolves URLs itself, so this adapter has no equivalent matching bug, but it now reports the failure by setting `request.state.guard_route_unresolved`. With guard-core >= 3.7.0 and `SecurityConfig.route_resolution_strict=True`, those requests are logged, emit a `route_unresolved` event, and are blocked with `500`. Behaviour is unchanged by default and on older guard-core, which ignores the attribute.
+- **Fixed (tests)** — The IPv6 and mixed IPv4/IPv6 allow-list tests still encoded pre-3.2.0 guard-core semantics, where the blacklist was evaluated before the whitelist. Since guard-core 3.2.0 an explicit whitelist match overrides the blacklist, so an address inside both a whitelist CIDR and a blacklist entry is now served rather than blocked. CI floats guard-core to the latest release and had not run here since 2026-05-28, so these only surfaced now; the adapter itself was correct throughout.
+- **Fixed (CI)** — The greetings workflow passed `issue-message`/`pr-message` to `actions/first-interaction@v3`, which expects `issue_message`/`pr_message`, so the job failed on every first-time issue and pull request.
+
+___
+
 v4.0.1 (2026-05-27)
 -------------------
 
