@@ -1024,7 +1024,8 @@ class TestDjangoAPIGuard:
         request.META["REMOTE_ADDR"] = "127.0.0.1"
         request.META["HTTP_X_FORWARDED_FOR"] = "2001:db8:dead::beef"
         response = middleware(request)
-        assert response.status_code == 403
+        # In both a whitelist CIDR and the blacklist: whitelist overrides
+        assert response.status_code == 200
 
         request = factory.get("/")
         request.META["REMOTE_ADDR"] = "127.0.0.1"
@@ -1060,7 +1061,8 @@ class TestDjangoAPIGuard:
         request.META["REMOTE_ADDR"] = "127.0.0.1"
         request.META["HTTP_X_FORWARDED_FOR"] = "192.168.1.100"
         response = middleware(request)
-        assert response.status_code == 403
+        # In both a whitelist CIDR and the blacklist: whitelist overrides
+        assert response.status_code == 200
 
         request = factory.get("/")
         request.META["REMOTE_ADDR"] = "127.0.0.1"
@@ -1078,7 +1080,8 @@ class TestDjangoAPIGuard:
         request.META["REMOTE_ADDR"] = "127.0.0.1"
         request.META["HTTP_X_FORWARDED_FOR"] = "2001:db8:dead::beef"
         response = middleware(request)
-        assert response.status_code == 403
+        # In both a whitelist CIDR and the blacklist: whitelist overrides
+        assert response.status_code == 200
 
     def test_ipv6_rate_limiting(self) -> None:
         config = SecurityConfig(
