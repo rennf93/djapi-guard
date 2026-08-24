@@ -1,0 +1,30 @@
+# Architectural conventions for this project.
+# Auto-scaffolded by RoboCo — edit freely; this file is canonical.
+# Each module lists definition KINDS forbidden in it; rules toggle
+# warn/block; waivers are accountable, PR-reviewed escape hatches.
+version: 1
+languages:
+- python
+modules:
+- path: examples/advanced/advanced_app/routes
+  purpose: HTTP routes / endpoint definitions
+  forbidden:
+  - model
+  - helper
+rules:
+  no_lint_suppressions:
+    level: block
+  no_inline_comments:
+    level: warn
+  no_models_in_routes:
+    level: block
+  no_helpers_in_routes:
+    level: warn
+  modular_cohesion:
+    level: block
+  god_class:
+    level: warn
+  thin_routes:
+    level: block
+custom: []
+waivers: []
