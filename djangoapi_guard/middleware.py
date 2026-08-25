@@ -6,6 +6,7 @@ from typing import Any, cast
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from guard_core.models import SecurityConfig
+from guard_core.protocols.response_protocol import GuardResponse
 from guard_core.sync.core.behavioral import BehavioralContext, BehavioralProcessor
 from guard_core.sync.core.bypass import BypassContext, BypassHandler
 from guard_core.sync.core.checks.pipeline import SecurityCheckPipeline
@@ -19,6 +20,7 @@ from guard_core.sync.handlers.cloud_handler import cloud_handler
 from guard_core.sync.handlers.cors_handler import CorsHandler, is_preflight
 from guard_core.sync.handlers.ratelimit_handler import RateLimitManager
 from guard_core.sync.handlers.security_headers_handler import security_headers_manager
+from guard_core.sync.protocols.request_protocol import SyncGuardRequest
 from guard_core.sync.utils import extract_client_ip, setup_custom_logging
 
 from djangoapi_guard.adapters import (
@@ -237,6 +239,10 @@ class DjangoAPIGuard:
 
         request_headers = dict(request.headers)
 
+        def wrapped_call_next(guard_req: SyncGuardRequest) -> GuardResponse:
+            django_request = cast(HttpRequest, guard_req.state)
+            return DjangoGuardResponse(self.get_response(django_request))
+
         if self._cors_handler is not None and is_preflight(
             request.method or "", request_headers
         ):
@@ -245,7 +251,9 @@ class DjangoAPIGuard:
                 return self._attach_cors_headers(blocking, request)
             return self._build_preflight_response(request_headers)
 
-        passthrough = self.bypass_handler.handle_passthrough(guard_request)
+        passthrough = self.bypass_handler.handle_passthrough(
+            guard_request, wrapped_call_next
+        )
         if passthrough is not None:
             return self._attach_cors_headers(unwrap_response(passthrough), request)
 
@@ -256,7 +264,7 @@ class DjangoAPIGuard:
         cast(Any, request)._guard_route_config = route_config
 
         bypass = self.bypass_handler.handle_security_bypass(
-            guard_request, route_config=route_config
+            guard_request, wrapped_call_next, route_config=route_config
         )
         if bypass is not None:
             return self._attach_cors_headers(unwrap_response(bypass), request)
