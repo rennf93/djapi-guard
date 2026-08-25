@@ -54,6 +54,11 @@ class DjangoGuardRequest:
         result: bytes = self._request.body
         return result
 
+    def read_body_prefix(self, max_bytes: int) -> bytes:
+        if max_bytes <= 0:
+            return b""
+        return self._request.body[:max_bytes]
+
     @property
     def state(self) -> Any:
         return self._request
@@ -106,6 +111,14 @@ class DjangoGuardResponse:
     def body(self) -> bytes | None:
         result: bytes | None = self._response.content
         return result
+
+    def read_body_prefix(self, max_bytes: int) -> bytes:
+        if max_bytes <= 0:
+            return b""
+        content: bytes | None = getattr(self._response, "content", None)
+        if content is None:
+            return b""
+        return content[:max_bytes]
 
 
 class DjangoResponseFactory:

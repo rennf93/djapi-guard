@@ -3,6 +3,19 @@ Release Notes
 
 ___
 
+v4.2.0 (2026-08-25)
+-------------------
+
+guard-core 3.13.0 compatibility: call_next bypass contract, bounded body readers, behavior-scan lockstep (v4.2.0)
+-------------------------------------------------------------------------------------------------------------------
+
+- **Fixed** - guard-core 3.12.0 (commit 30f43944) made `BypassHandler.handle_passthrough` and `handle_security_bypass` require a `call_next` callable, so this adapter's calls without it raised `TypeError` on every request and cascaded to HTTP 500. `DjangoAPIGuard.__call__` now builds a `wrapped_call_next` closure over `self.get_response(request)` and passes it to both bypass methods, so the no-client-host passthrough and the `@security.bypass_all` short-circuit run the downstream view and apply the response modifier instead of crashing. Django can supply a real downstream callable because its middleware contract exposes `get_response`, unlike Flask's `before_request` hook.
+- **Added** - `DjangoGuardRequest.read_body_prefix(max_bytes)` and `DjangoGuardResponse.read_body_prefix(max_bytes)` implement guard-core 3.12.0's `SyncBoundedBodyReader` / `SyncBoundedResponseBodyReader` protocols, so response-body `return_pattern` rules (`json:`, `regex:`, bare substring) and bounded request-body inspection actually match for the first time in this adapter. `DjangoGuardResponse.read_body_prefix` reads `response.content` and returns `b""` for a `StreamingHttpResponse`, whose `.content` raises `AttributeError`.
+- **Fixed (tests)** - The behavioral decorator fixture now sets `behavior_scan_response_body=True` before applying `return_monitor` / `behavior_analysis` decorators, since guard-core 3.12.0 rejects body-reading `return_pattern` rules at decorator-apply time when that flag is off. The stale `mock.patch` of `guard_core.sync.core.checks.implementations.suspicious_activity.detect_penetration_patterns` (removed in guard-core 3.12.0's detection-cache seam) is gone; the test patches `guard_core.sync.utils.detect_penetration_attempt` instead. The `block_all_clouds_default` assertion tracks guard-core 3.13.0's expanded `VALID_CLOUD_PROVIDERS` (DigitalOcean, Vultr, Linode), and the honeypot tests feed `read_body_prefix` on their mocked request because guard-core 3.12.0's body reader calls it when no `content-length` header is present. `--cov-branch` is now in `addopts` so branch coverage is enforced.
+- **Compatibility** - Requires guard-core 3.13.0. No public API of this adapter changed: `DjangoAPIGuard`, `DjangoGuardRequest`, `DjangoGuardResponse` and the re-exported decorators keep their signatures; the new `read_body_prefix` methods are additive. Lockstep with flaskapi-guard and fastapi-guard 7.7.0 on the guard-core 3.13.0 line.
+
+___
+
 v4.1.0 (2026-07-29)
 -------------------
 

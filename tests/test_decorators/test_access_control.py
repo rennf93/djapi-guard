@@ -160,7 +160,14 @@ def test_block_all_clouds_default(decorator: SecurityDecorator) -> None:
     route_id = cast(Any, decorated)._guard_route_id
     route_config = decorator.get_route_config(route_id)
     assert route_config is not None
-    assert route_config.block_cloud_providers == {"AWS", "GCP", "Azure"}
+    assert route_config.block_cloud_providers == {
+        "AWS",
+        "GCP",
+        "Azure",
+        "DigitalOcean",
+        "Vultr",
+        "Linode",
+    }
 
 
 def test_security_bypass(decorator: SecurityDecorator) -> None:

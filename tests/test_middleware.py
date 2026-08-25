@@ -62,6 +62,14 @@ class TestDjangoAPIGuard:
         response = middleware(request)
         assert response.status_code == 200
 
+    def test_passthrough_request_no_client_host(self) -> None:
+        middleware = self._make_middleware()
+        factory = RequestFactory()
+        request = factory.get("/")
+        request.META.pop("REMOTE_ADDR", None)
+        response = middleware(request)
+        assert response.status_code == 200
+
     def test_excluded_path(self) -> None:
         config = SecurityConfig(
             enable_redis=False,
@@ -378,12 +386,6 @@ class TestDjangoAPIGuard:
         factory = RequestFactory()
 
         with (
-            patch(
-                "guard_core.sync.core.checks.implementations.suspicious_activity.detect_penetration_patterns",
-                return_value=DetectionResult(
-                    is_threat=True, trigger_info="SQL injection attempt"
-                ),
-            ),
             patch(
                 "guard_core.sync.core.checks.implementations.suspicious_activity.log_activity"
             ),

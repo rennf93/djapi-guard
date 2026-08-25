@@ -22,6 +22,7 @@ def security_config() -> SecurityConfig:
         enable_agent=False,
         trusted_proxies=["127.0.0.1"],
         enable_penetration_detection=False,
+        behavior_scan_response_body=True,
     )
 
 
