@@ -47,7 +47,7 @@ ___
 - `GET /access/country-allow` - Allow countries (US, CA, GB, AU)
 - `GET /access/no-cloud` - Block all cloud providers
 - `GET /access/no-aws` - Block AWS only
-- `GET /access/bypass-demo` - Bypass rate_limit and geo_check
+- `GET /access/bypass-demo` - Bypass rate_limit and ip
 
 ### Authentication (`/auth/`)
 

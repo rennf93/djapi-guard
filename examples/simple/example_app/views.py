@@ -193,7 +193,7 @@ def access_no_aws(request: HttpRequest) -> JsonResponse:
 
 
 @require_GET
-@guard.bypass(["rate_limit", "geo_check"])
+@guard.bypass(["rate_limit", "ip"])
 def access_bypass_demo(request: HttpRequest) -> JsonResponse:
     return JsonResponse(
         {
@@ -201,7 +201,7 @@ def access_bypass_demo(request: HttpRequest) -> JsonResponse:
             "details": {
                 "bypassed_checks": [
                     "rate_limit",
-                    "geo_check",
+                    "ip",
                 ]
             },
         }
