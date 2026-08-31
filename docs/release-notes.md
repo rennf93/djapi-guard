@@ -3,6 +3,20 @@ Release Notes
 
 ___
 
+v4.3.0 (2026-08-31)
+-------------------
+
+guard-core 3.15.0 compatibility: lazy Redis initialization, fail-secure client-address rejection (v4.3.0)
+---------------------------------------------------------------------------------------------------------
+
+- **Fixed** - `DjangoAPIGuard.__init__()` called `HandlerInitializer.initialize_redis_handlers()` eagerly. Django's `load_middleware()` runs this before `convert_exception_to_response` is installed, so a Redis outage at process start raised `GuardRedisError` as a raw unhandled exception at the WSGI boundary instead of a styled response, and since `__init__` runs once per worker process, recovery needed a restart. Initialization is now lazy: `__call__` runs it once, on the first request, through the new `_ensure_handlers_initialized()`. A `GuardRedisError` on that first attempt is caught, logged, and answered with `HttpResponse(status=503)` and `Retry-After: 5`; the initialized flag stays unset, so the next request retries instead of waiting on a restart. `redis_fail_open` and `fail_secure` keep their existing guard-core meaning throughout; no new policy was introduced.
+- **Compatibility (GHSA-634g-4wr8-xwxv)** - A request with no client address is now rejected by default (`fail_secure=True`) instead of running the security pipeline with an "unknown" identity; this is guard-core 3.15.0's own fix, this adapter's test suite is brought in line with it here. `test_passthrough_request_no_client_host` now expects `403` instead of `200`.
+- **Fixed (tests)** - `test_rate_limiter_redis_errors` asserted that a Redis error during rate limiting always falls back to the in-memory window. guard-core 3.15.0's `check_rate_limit` now honors `redis_fail_open` like every other check: with the default `redis_fail_open=False` it raises `GuardRedisError` instead of returning `None` silently, and only falls back in-memory once `redis_fail_open=True` is set. The test now asserts the raise on the default and the fallback only after opting in.
+- **Internal** - The no-client-host 403 above is returned before `call_next` is ever reached, so the `wrapped_call_next` closure in `__call__` lost the only test path that invoked it. It is not dead: `handle_security_bypass` still calls it when a route bypasses all checks (`@security.bypass(["all"])`) outside `passive_mode`. Coverage is restored with a test that exercises that route instead of removing the closure. Splitting the lazy-init check into `_ensure_handlers_initialized()` and the CORS-preflight block into `_handle_preflight()` also keeps `__call__` at cyclomatic complexity rank B.
+- **Compatibility** - `guard-core` moves from an unconstrained dependency to `guard-core>=3.15.0` in `pyproject.toml`; no upper bound, the floor moves with each lockstep release. No public API of this adapter changed.
+
+___
+
 v4.2.0 (2026-08-25)
 -------------------
 

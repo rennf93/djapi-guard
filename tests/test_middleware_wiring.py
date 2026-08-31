@@ -21,7 +21,9 @@ def _build(settings_override: Any) -> DjangoAPIGuard:
         "djangoapi_guard.middleware.settings",
         settings_override,
     ):
-        return DjangoAPIGuard(_noop_get_response())
+        middleware = DjangoAPIGuard(_noop_get_response())
+    middleware._initialize_handlers()
+    return middleware
 
 
 class _Settings:

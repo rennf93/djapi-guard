@@ -21,7 +21,9 @@ class _Settings:
 
 def _build(config: SecurityConfig) -> DjangoAPIGuard:
     with patch("djangoapi_guard.middleware.settings", _Settings(config)):
-        return DjangoAPIGuard(_noop_get_response())
+        middleware = DjangoAPIGuard(_noop_get_response())
+    middleware._initialize_handlers()
+    return middleware
 
 
 def test_init_rebinds_agent_handler_to_composite() -> None:

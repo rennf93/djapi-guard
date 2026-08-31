@@ -5,6 +5,7 @@ from typing import Any, cast
 
 from django.conf import settings
 from django.http import HttpRequest, HttpResponse
+from guard_core.exceptions import GuardRedisError
 from guard_core.models import SecurityConfig
 from guard_core.protocols.response_protocol import GuardResponse
 from guard_core.sync.core.behavioral import BehavioralContext, BehavioralProcessor
@@ -67,6 +68,7 @@ class DjangoAPIGuard:
         self._cors_handler: CorsHandler | None = (
             CorsHandler(self.config) if self.config.enable_cors else None
         )
+        self._handlers_initialized = False
 
         self._configure_security_headers(self.config)
         self._init_geo_ip_handler()
@@ -76,7 +78,6 @@ class DjangoAPIGuard:
         self._init_route_resolver()
         self._build_event_bus_and_contexts()
         self._build_security_pipeline()
-        self._initialize_handlers()
 
     @property
     def guard_response_factory(self) -> DjangoResponseFactory:
@@ -228,7 +229,39 @@ class DjangoAPIGuard:
         except Resolver404:
             guard_request.state.guard_route_unresolved = True
 
+    def _ensure_handlers_initialized(self, request: HttpRequest) -> HttpResponse | None:
+        if self._handlers_initialized:
+            return None
+        try:
+            self._initialize_handlers()
+        except GuardRedisError as e:
+            self.logger.error("Redis unavailable during initialization: %s", e)
+            return self._attach_cors_headers(
+                self._redis_unavailable_response(), request
+            )
+        self._handlers_initialized = True
+        return None
+
+    def _handle_preflight(
+        self,
+        request: HttpRequest,
+        guard_request: DjangoGuardRequest,
+        request_headers: dict[str, str],
+    ) -> HttpResponse | None:
+        if self._cors_handler is None:
+            return None
+        if not is_preflight(request.method or "", request_headers):
+            return None
+        blocking = self._execute_security_pipeline(guard_request)
+        if blocking:
+            return self._attach_cors_headers(blocking, request)
+        return self._build_preflight_response(request_headers)
+
     def __call__(self, request: HttpRequest) -> HttpResponse:
+        early_response = self._ensure_handlers_initialized(request)
+        if early_response is not None:
+            return early_response
+
         self._assert_initialized()
         assert self.bypass_handler is not None
         assert self.route_resolver is not None
@@ -243,13 +276,11 @@ class DjangoAPIGuard:
             django_request = cast(HttpRequest, guard_req.state)
             return DjangoGuardResponse(self.get_response(django_request))
 
-        if self._cors_handler is not None and is_preflight(
-            request.method or "", request_headers
-        ):
-            blocking = self._execute_security_pipeline(guard_request)
-            if blocking:
-                return self._attach_cors_headers(blocking, request)
-            return self._build_preflight_response(request_headers)
+        preflight_response = self._handle_preflight(
+            request, guard_request, request_headers
+        )
+        if preflight_response is not None:
+            return preflight_response
 
         passthrough = self.bypass_handler.handle_passthrough(
             guard_request, wrapped_call_next
@@ -319,6 +350,13 @@ class DjangoAPIGuard:
         for key, value in cors_headers.items():
             response[key] = value
         return response
+
+    def _redis_unavailable_response(self) -> HttpResponse:
+        guard_response = self.create_error_response(
+            503, "Service temporarily unavailable"
+        )
+        guard_response.headers["Retry-After"] = "5"
+        return unwrap_response(guard_response)
 
     def _finalize_response(
         self,

@@ -8,6 +8,7 @@ from unittest.mock import MagicMock, Mock, patch
 import pytest
 from django.http import HttpRequest, HttpResponse
 from django.test import RequestFactory
+from guard_core.exceptions import GuardRedisError
 from guard_core.models import SecurityConfig
 from guard_core.protocols.request_protocol import GuardRequest
 from guard_core.protocols.response_protocol import GuardResponse
@@ -20,6 +21,7 @@ from guard_core.sync.handlers.ratelimit_handler import (
 )
 from guard_core.sync.protocols.request_protocol import SyncGuardRequest
 
+from djangoapi_guard import SecurityDecorator
 from djangoapi_guard.adapters import DjangoGuardRequest, DjangoGuardResponse
 from djangoapi_guard.middleware import DjangoAPIGuard
 
@@ -68,7 +70,7 @@ class TestDjangoAPIGuard:
         request = factory.get("/")
         request.META.pop("REMOTE_ADDR", None)
         response = middleware(request)
-        assert response.status_code == 200
+        assert response.status_code == 403
 
     def test_excluded_path(self) -> None:
         config = SecurityConfig(
@@ -800,7 +802,8 @@ class TestDjangoAPIGuard:
                 "guard_core.sync.handlers.ratelimit_handler.RateLimitManager.initialize_redis"
             ) as rate_init,
         ):
-            self._make_middleware(config)
+            middleware = self._make_middleware(config)
+            middleware._initialize_handlers()
 
             redis_init.assert_called_once()
             cloud_init.assert_called_once()
@@ -831,7 +834,8 @@ class TestDjangoAPIGuard:
                 "guard_core.sync.handlers.ratelimit_handler.RateLimitManager.initialize_redis"
             ) as rate_init,
         ):
-            self._make_middleware(config)
+            middleware = self._make_middleware(config)
+            middleware._initialize_handlers()
 
             redis_init.assert_called_once()
             cloud_init.assert_not_called()
@@ -873,6 +877,7 @@ class TestDjangoAPIGuard:
         ):
             with patch.dict(sys.modules, {"guard_agent": mock_agent_module}):
                 middleware = self._make_middleware(config)
+                middleware._initialize_handlers()
                 assert middleware.handler_initializer is not None
                 composite = middleware.handler_initializer.composite_handler
                 assert composite is not None
@@ -1292,7 +1297,6 @@ class TestDjangoAPIGuard:
         with (
             patch.object(mock_redis_handler, "get_connection") as mock_get_connection,
             patch.object(logging.Logger, "error") as mock_error,
-            patch.object(logging.Logger, "info") as mock_info,
         ):
             mock_conn = MagicMock()
             mock_conn.__enter__ = MagicMock(
@@ -1306,14 +1310,24 @@ class TestDjangoAPIGuard:
             request = factory.get("/")
             request.META["REMOTE_ADDR"] = "192.168.1.1"
 
+            with pytest.raises(GuardRedisError):
+                handler.check_rate_limit(
+                    DjangoGuardRequest(request), "192.168.1.1", create_error_response
+                )
+
+            mock_error.assert_called_once()
+            assert "Redis rate limiting error" in mock_error.call_args[0][0]
+
+            mock_error.reset_mock()
+            config.redis_fail_open = True
+
             result = handler.check_rate_limit(
                 DjangoGuardRequest(request), "192.168.1.1", create_error_response
             )
             assert result is None
+            mock_error.assert_not_called()
 
-            mock_error.assert_called_once()
-            assert "Redis rate limiting error" in mock_error.call_args[0][0]
-            mock_info.assert_called_once_with("Falling back to in-memory rate limiting")
+            config.redis_fail_open = False
 
         with (
             patch.object(mock_redis_handler, "get_connection") as mock_get_connection,
@@ -1327,13 +1341,22 @@ class TestDjangoAPIGuard:
             request = factory.get("/")
             request.META["REMOTE_ADDR"] = "192.168.1.1"
 
+            with pytest.raises(GuardRedisError):
+                handler.check_rate_limit(
+                    DjangoGuardRequest(request), "192.168.1.1", create_error_response
+                )
+
+            mock_error.assert_called_once()
+            assert "Unexpected error in rate limiting" in mock_error.call_args[0][0]
+
+            mock_error.reset_mock()
+            config.redis_fail_open = True
+
             result = handler.check_rate_limit(
                 DjangoGuardRequest(request), "192.168.1.1", create_error_response
             )
             assert result is None
-
-            mock_error.assert_called_once()
-            assert "Unexpected error in rate limiting" in mock_error.call_args[0][0]
+            mock_error.assert_not_called()
 
     def test_rate_limiter_init_redis_exception(self) -> None:
         config = SecurityConfig(
@@ -1595,6 +1618,55 @@ class TestDjangoAPIGuardCoverage:
             response = middleware(request)
             assert response.status_code == 403
 
+    def test_call_bypass_all_invokes_call_next(self) -> None:
+        config = SecurityConfig(
+            enable_redis=False,
+            enable_agent=False,
+            enable_penetration_detection=False,
+        )
+        middleware = self._make_middleware(config)
+
+        decorator = SecurityDecorator(config)
+        mock_func = Mock()
+        mock_func.__name__ = mock_func.__qualname__ = "bypass_all_view"
+        mock_func.__module__ = "test_module"
+        decorated = decorator.bypass(["all"])(mock_func)
+        route_id = cast(Any, decorated)._guard_route_id
+
+        middleware.set_decorator_handler(decorator)
+
+        factory = RequestFactory()
+        request = factory.get("/")
+        cast(Any, request).guard_route_id = route_id
+
+        response = middleware(request)
+
+        assert response.status_code == 200
+        assert response.content == b"OK"
+
+    def test_call_redis_unavailable_during_initialization_retries_next_request(
+        self,
+    ) -> None:
+        middleware = self._make_middleware()
+        factory = RequestFactory()
+
+        with patch.object(
+            middleware.handler_initializer,
+            "initialize_redis_handlers",
+            side_effect=[GuardRedisError(503, "Redis connection failed"), None],
+        ) as mock_init:
+            first_response = middleware(factory.get("/"))
+            first_initialized = middleware._handlers_initialized
+            assert first_response.status_code == 503
+            assert first_response["Retry-After"] == "5"
+            assert first_initialized is False
+
+            second_response = middleware(factory.get("/"))
+            second_initialized = middleware._handlers_initialized
+            assert second_response.status_code == 200
+            assert second_initialized is True
+            assert mock_init.call_count == 2
+
     def test_call_pipeline_blocks(self) -> None:
         middleware = self._make_middleware()
         factory = RequestFactory()
@@ -1629,6 +1701,7 @@ class TestDjangoAPIGuardCoverage:
             patch.dict(sys.modules, {"guard_agent": mock_module}),
         ):
             middleware = self._make_middleware(config)
+            middleware._initialize_handlers()
             assert middleware.handler_initializer is not None
             composite = middleware.handler_initializer.composite_handler
             assert composite is not None
