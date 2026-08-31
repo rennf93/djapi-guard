@@ -2704,7 +2704,7 @@
 </tr>
 </tbody>
 </table>
-<p>Unknown tokens are ignored, so a typo leaves the check fully enforced rather than raising. There is no country-only token: country blocking is bypassed by <code>ip</code>, which also lifts the global IP whitelist and blacklist for that route.</p>
+<p>An unknown token is ignored and logged as a warning naming it, so a typo leaves the check fully enforced rather than raising. There is no country-only token: country blocking is bypassed by <code>ip</code>, which also lifts the global IP whitelist and blacklist for that route.</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nd">@guard_deco</span><span class="o">.</span><span class="n">bypass</span><span class="p">([</span><span class="s2">"rate_limit"</span><span class="p">,</span> <span class="s2">"ip"</span><span class="p">])</span>  <span class="c1"># Bypass rate limiting and IP checks</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">health_check</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>    <span class="k">return</span> <span class="n">JsonResponse</span><span class="p">({</span><span class="s2">"status"</span><span class="p">:</span> <span class="s2">"healthy"</span><span class="p">})</span>
