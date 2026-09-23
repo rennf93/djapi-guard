@@ -430,7 +430,7 @@ def test_blocked_user_agent_pattern() -> None:
         enable_redis=False,
         enable_agent=False,
         enable_penetration_detection=False,
-        blocked_user_agents=[r".*crawler.*"],
+        blocked_user_agents=[r"[Cc]rawler/\d+\.\d+"],
     )
     middleware = _make_middleware(config)
     factory = RequestFactory()
