@@ -1,4 +1,5 @@
 # AGENTS.md
+
 Guidance for AI agents (including Claude Code) working in this repository.
 
 ## Project Overview
@@ -25,7 +26,7 @@ It is a direct port of [FlaskAPI Guard](https://github.com/rennf93/flaskapi-guar
 
 DjAPI Guard is a **thin adapter** over [guard-core](https://github.com/rennf93/guard-core). All security logic (models, handlers, decorators, detection engine, protocols, utilities) lives in the `guard_core` package; this repo contains only the Django integration layer.
 
-```
+```text
 guard-core (engine, PyPI dependency >=3.15.0)   <- all security logic
 └── djangoapi-guard (this repo)                 <- Django middleware adapter
     ├── fastapi-guard                           <- sibling adapter (ASGI middleware)
