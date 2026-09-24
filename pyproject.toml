@@ -134,6 +134,10 @@ plugins = ["mypy_django_plugin.main"]
 [tool.django-stubs]
 django_settings_module = "tests.settings"
 
+[tool.pymarkdown.extensions]
+# Enable YAML front matter parsing (agent skill files use front matter)
+front-matter = {enabled = true}
+
 [tool.pymarkdown.plugins.md007]
 enabled = true
 indent = 2
