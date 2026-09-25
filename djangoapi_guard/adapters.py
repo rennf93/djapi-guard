@@ -124,7 +124,9 @@ class DjangoGuardResponse:
 class DjangoResponseFactory:
     def create_response(self, content: str, status_code: int) -> DjangoGuardResponse:
         return DjangoGuardResponse(
-            HttpResponse(content, status=status_code, content_type="text/plain; charset=utf-8")
+            HttpResponse(
+                content, status=status_code, content_type="text/plain; charset=utf-8"
+            )
         )
 
     def create_redirect_response(
